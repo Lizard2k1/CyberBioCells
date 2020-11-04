@@ -27,7 +27,7 @@ public class World implements IWorld
 
 	boolean started;
 	Worker thread;
-	protected World(IWindow win)
+	public World(IWindow win)
 	{
 		world = this;
 		window = win;
@@ -138,8 +138,6 @@ public class World implements IWorld
 		}
 
 		matrix[bot.x][bot.y] = bot; // даём ссылку на бота в массиве world[]
-
-		return;
 	}
 	public void restoreLinks()
 	{

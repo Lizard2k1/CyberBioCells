@@ -25,15 +25,28 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="41095dfc-b5ed-4496-9623-93c60955f9c4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/util/Consts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/CyberBiology.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CyberBiology.iml" afterDir="false" />
+    <list default="true" id="41095dfc-b5ed-4496-9623-93c60955f9c4" name="Default Changelist" comment="refactor menu items with seperation code to menu action, extract AppWindow from MainWindow and PlayerWindow">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gui/AppWindow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gui/CustomListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/menu/MenuAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/menu/file/DeleteAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/menu/file/ExitAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/menu/file/OpenAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/menu/file/PlayerAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/menu/file/RecordAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/menu/file/RunAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/menu/file/SaveAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/menu/file/SettingsAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/menu/file/SnapShotAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/menu/view/ViewAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/Bot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/MainWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/PlayerWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/PlayerWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/World.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/World.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/view/ViewBasic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/view/ViewBasic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/view/ViewMultiCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/view/ViewMultiCell.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/prototype/IWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/prototype/IWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/util/Consts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/util/Consts.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,8 +76,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -110,7 +125,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1604405254847</updated>
-      <workItem from="1604405256826" duration="1592000" />
+      <workItem from="1604405256826" duration="10856000" />
     </task>
     <task id="LOCAL-00001" summary="move code to src/main/java">
       <created>1604405609175</created>
@@ -119,7 +134,14 @@
       <option name="project" value="LOCAL" />
       <updated>1604405609175</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="extract BOTW and BOTH to util.Consts class">
+      <created>1604487190699</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1604487190699</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,7 +178,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="move code to src/main/java" />
-    <option name="LAST_COMMIT_MESSAGE" value="move code to src/main/java" />
+    <MESSAGE value="extract BOTW and BOTH to util.Consts class" />
+    <MESSAGE value="refactor menu items with seperation code to menu action, extract AppWindow from MainWindow and PlayerWindow" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor menu items with seperation code to menu action, extract AppWindow from MainWindow and PlayerWindow" />
   </component>
   <component name="WindowStateProjectService">
     <state x="440" y="94" key="#Project_Structure" timestamp="1604486698863">
@@ -167,50 +191,54 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="174" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604486735218" />
+    <state x="765" y="235" key="#com.intellij.ide.util.MemberChooser" timestamp="1604494227699">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="765" y="235" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1604494227699" />
     <state x="689" y="321" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1604405503303">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="689" y="321" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604405503303" />
-    <state x="579" y="88" key="CommitChangelistDialog2" timestamp="1604405608186">
+    <state x="579" y="88" key="CommitChangelistDialog2" timestamp="1604496880494">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="579" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1604405608186" />
+    <state x="579" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1604496880494" />
     <state x="740" y="261" key="FileChooserDialogImpl" timestamp="1604405155895">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="261" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1604405155895" />
-    <state width="1877" height="338" key="GridCell.Tab.0.bottom" timestamp="1604486885303">
+    <state width="1877" height="358" key="GridCell.Tab.0.bottom" timestamp="1604496092369">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="338" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
-    <state width="1877" height="338" key="GridCell.Tab.0.center" timestamp="1604486885303">
+    <state width="1877" height="358" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1604496092369" />
+    <state width="1877" height="358" key="GridCell.Tab.0.center" timestamp="1604496092369">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="338" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
-    <state width="1877" height="338" key="GridCell.Tab.0.left" timestamp="1604486885303">
+    <state width="1877" height="358" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1604496092369" />
+    <state width="1877" height="358" key="GridCell.Tab.0.left" timestamp="1604496092369">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="338" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
-    <state width="1877" height="338" key="GridCell.Tab.0.right" timestamp="1604486885303">
+    <state width="1877" height="358" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1604496092369" />
+    <state width="1877" height="358" key="GridCell.Tab.0.right" timestamp="1604496092369">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="338" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
-    <state width="1877" height="338" key="GridCell.Tab.1.bottom" timestamp="1604486885303">
+    <state width="1877" height="358" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1604496092369" />
+    <state width="1877" height="358" key="GridCell.Tab.1.bottom" timestamp="1604496092369">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="338" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
-    <state width="1877" height="338" key="GridCell.Tab.1.center" timestamp="1604486885303">
+    <state width="1877" height="358" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1604496092369" />
+    <state width="1877" height="358" key="GridCell.Tab.1.center" timestamp="1604496092369">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="338" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
-    <state width="1877" height="338" key="GridCell.Tab.1.left" timestamp="1604486885303">
+    <state width="1877" height="358" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1604496092369" />
+    <state width="1877" height="358" key="GridCell.Tab.1.left" timestamp="1604496092369">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="338" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
-    <state width="1877" height="338" key="GridCell.Tab.1.right" timestamp="1604486885303">
+    <state width="1877" height="358" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1604496092369" />
+    <state width="1877" height="358" key="GridCell.Tab.1.right" timestamp="1604496092369">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="338" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
+    <state width="1877" height="358" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1604496092369" />
     <state x="841" y="240" key="RollbackChangesDialog" timestamp="1604405572563">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -223,5 +251,28 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1604405751768" />
+    <state x="690" y="280" key="extract.method.dialog" timestamp="1604492169778">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="690" y="280" key="extract.method.dialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604492169778" />
+    <state x="755" y="267" key="refactoring.ChangeSignatureDialog" timestamp="1604487746750">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="755" y="267" key="refactoring.ChangeSignatureDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604487746750" />
+    <state x="616" y="173" width="672" height="676" key="search.everywhere.popup" timestamp="1604488378849">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="173" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1604488378849" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gui/AppWindow.java</url>
+          <line>60</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
