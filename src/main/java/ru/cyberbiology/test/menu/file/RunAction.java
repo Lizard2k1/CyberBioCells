@@ -29,7 +29,6 @@ public class RunAction extends MenuAction {
             if (!world.started()) {
                 world.start();//Запускаем его
                 setText(PAUSE_TEXT);
-
             } else {
                 world.stop();
                 setText(CONTINUE_TEXT);

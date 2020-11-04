@@ -33,10 +33,9 @@ public class SBot extends Bot {
             step = 0;
             maxStep = 0;
             if (onEnd != null) {
-                world.stop();
                 onEnd.run();
                 onEnd = null;
-                paint(g);
+                world.stop();
             }
         } else if (maxStep > 0 && step > delay && step < maxStep - delay) {
             posX = x * BOTW + (step - delay) * (targX * BOTW - x * BOTW) / (maxStep - delay * 2);
@@ -65,22 +64,14 @@ public class SBot extends Bot {
 
     @Override
     public void swap(IBot iBot) {
+        world.swapMatrix[targX][targY] = this;
         if (iBot == null || this.equals(iBot)) {
             return;
         }
-        // cast to Bot class - we don't want work with interfaces
-        Bot bot = (Bot) iBot;
-        // swap cells in world matrix
-        world.matrix[this.x][this.y] = bot;
-        world.matrix[targX][targY] = this;
-//        // reset x and y coords in bot from argument
-//        bot.hasPos = false;
-//        bot.setXY(x, y);
-//        // reset x and y coords in current bot
-//        if (targX > 0 || targY > 0) {
-//            this.hasPos = false;
-//            this.setXY(targX, targY);
-//        }
+        hasPos = false;
+        setXY(targX, targY);
+        posX = x * BOTW;
+        posY = y * BOTH;
     }
 
     @SuppressWarnings("unused")

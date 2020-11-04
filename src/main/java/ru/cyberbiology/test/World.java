@@ -23,12 +23,15 @@ public class World implements IWorld
 	public int height;
 
 	public IBot[][] matrix; // Матрица мира
+	public IBot[][] swapMatrix; // Матрица мира
 	public int generation;
 	public int population;
 	public int organic;
 
 	boolean started;
 	Worker thread;
+	private Runnable onStart;
+	private Runnable onStop;
 	public World(IWindow win)
 	{
 		world = this;
@@ -50,12 +53,14 @@ public class World implements IWorld
 		this.width = width;
 		this.height = height;
 		this.matrix = new Bot[width][height];
+		this.swapMatrix = new Bot[width][height];
 	}
 
 	@Override
 	public void setBot(Bot bot)
 	{
 		this.matrix[bot.x][bot.y] = bot;
+		this.swapMatrix[bot.x][bot.y] = bot;
 	}
 
 	public void paint()
@@ -109,6 +114,7 @@ public class World implements IWorld
 				}
 				// sleep(); // пауза между ходами, если надо уменьшить скорость
 			}
+//			world.matrix = world.swapMatrix;
 			paint();// если запаузили рисуем актуальную картинку
 			started = false;// Закончили работу
 		}
@@ -169,6 +175,9 @@ public class World implements IWorld
 		{
 			this.thread = new Worker();
 			this.thread.start();
+			if (onStart != null) {
+				onStart.run();
+			}
 		}
 	}
 
@@ -176,6 +185,17 @@ public class World implements IWorld
 	{
 		started = false;
 		this.thread = null;
+		if (onStop != null) {
+			onStop.run();
+		}
+	}
+
+	public void setOnStart(Runnable onStart) {
+		this.onStart = onStart;
+	}
+
+	public void setOnStop(Runnable onStop) {
+		this.onStop = onStop;
 	}
 
 	public boolean isRecording()
