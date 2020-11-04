@@ -5,7 +5,6 @@ import ru.cyberbiology.test.gui.AppWindow;
 import ru.cyberbiology.test.menu.file.OpenAction;
 import ru.cyberbiology.test.menu.view.ViewAction;
 import ru.cyberbiology.test.prototype.view.IView;
-import ru.cyberbiology.test.view.ViewBasic;
 
 import javax.swing.*;
 import java.awt.*;

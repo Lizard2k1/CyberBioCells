@@ -7,7 +7,6 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 import ru.cyberbiology.test.World;
-import ru.cyberbiology.test.bot.Bot;
 import ru.cyberbiology.test.prototype.view.IView;
 
 import static ru.cyberbiology.test.util.Consts.*;
@@ -42,25 +41,9 @@ public class ViewBasic implements IView
                 if (world.matrix[x][y] == null) {
                     g.setColor(Color.WHITE);
                     g.fillRect(x * BOTW,y * BOTH, BOTW, BOTH);
-                } else if ((world.matrix[x][y].getAlive() == 1) || (world.matrix[x][y].getAlive() == 2)) {
-                    g.setColor(new Color(200, 200, 200));
-                    g.fillRect(x * BOTW, y * BOTH, BOTW, BOTH);
-                    world.organic = world.organic + 1;
-                } else if (world.matrix[x][y].getAlive() == 3) {
-                    g.setColor(Color.BLACK);
-                    g.drawRect(x * BOTW, y * BOTH, BOTW, BOTH);
-
-//                    g.setColor(new Color(matrix[x][y].c_red, matrix[x][y].c_green, matrix[x][y].c_blue));
-                    int green = (int) (((Bot) world.matrix[x][y]).c_green
-                            - ((((Bot) world.matrix[x][y]).c_green * ((Bot) world.matrix[x][y]).health) / 2000));
-                    if (green < 0) green = 0;
-                    if (green > 255) green = 255;
-                    int blue = (int) (((Bot) world.matrix[x][y]).c_blue * 0.8
-                            - ((((Bot) world.matrix[x][y]).c_blue * ((Bot) world.matrix[x][y]).mineral) / 2000));
-                    g.setColor(new Color(((Bot) world.matrix[x][y]).c_red, green, blue));
-//                    g.setColor(new Color(matrix[x][y].c_red, matrix[x][y].c_green, matrix[x][y].c_blue));
-                    g.fillRect(x * BOTW + 1, y * BOTH + 1,BOTW-1, BOTH-1);
-                    world.population = world.population + 1;
+                } else {
+                    world.matrix[x][y].setXY(x, y);
+                    world.matrix[x][y].paint(g);
                 }
             }
         }

@@ -1,6 +1,5 @@
 package ru.cyberbiology.test.menu.file;
 
-import ru.cyberbiology.test.World;
 import ru.cyberbiology.test.menu.MenuAction;
 import ru.cyberbiology.test.prototype.IWindow;
 
@@ -21,6 +20,7 @@ public class RunAction extends MenuAction {
     @Override
     public ActionListener getListener() {
         return e -> {
+            world = window.getWorld();
             if (world == null) {
                 createWorld();
                 world.generateAdam();

@@ -20,6 +20,7 @@ public class ExitAction extends MenuAction {
     @Override
     public ActionListener getListener() {
         return e -> {
+            world = window.getWorld();
             // Попытка корректно заверишть запись, если она велась
             // TODO: Не тестировалось!
             if (world != null && world.isRecording()) {

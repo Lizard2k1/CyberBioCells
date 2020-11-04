@@ -1,20 +1,18 @@
-package ru.cyberbiology.test.menu.file;
+package ru.cyberbiology.test.menu.demo;
 
 import ru.cyberbiology.test.menu.MenuAction;
 import ru.cyberbiology.test.prototype.IWindow;
 
 import java.awt.event.ActionListener;
 
-import static ru.cyberbiology.test.util.Consts.*;
-
-public class SnapShotAction extends MenuAction {
-    public SnapShotAction(IWindow window) {
+public class RandomAction extends MenuAction {
+    public RandomAction(IWindow window) {
         super(window);
     }
 
     @Override
     public String getCaption() {
-        return SNAPSHOT_TEXT;
+        return "Random Demo";
     }
 
     @Override
@@ -23,12 +21,10 @@ public class SnapShotAction extends MenuAction {
             world = window.getWorld();
             if (world == null) {
                 createWorld();
-                world.generateAdam();
-                window.paint();
+            } else {
+                world.stop();
             }
-            world.stop();
-            setText(CONTINUE_TEXT);
-            world.makeSnapShot();
+            DemoUtils.fillMatrix(world, true);
         };
     }
 }

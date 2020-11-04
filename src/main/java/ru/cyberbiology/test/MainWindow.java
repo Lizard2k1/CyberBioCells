@@ -2,7 +2,9 @@ package ru.cyberbiology.test;
 
 
 import ru.cyberbiology.test.gui.AppWindow;
-import ru.cyberbiology.test.menu.demo.SortAction;
+import ru.cyberbiology.test.menu.demo.RandomAction;
+import ru.cyberbiology.test.menu.demo.RgbSortAction;
+import ru.cyberbiology.test.menu.demo.TranspSortAction;
 import ru.cyberbiology.test.menu.file.*;
 import ru.cyberbiology.test.menu.view.ViewAction;
 import ru.cyberbiology.test.prototype.view.IView;
@@ -92,7 +94,9 @@ public class MainWindow extends AppWindow {
 
     private void initDemoMenu(JMenuBar menuBar) {
         JMenu demoMenu = new JMenu(DEMO_TEXT);
-        new SortAction(this).addTo(demoMenu);
+        new RandomAction(this).addTo(demoMenu);
+        new TranspSortAction(this).addTo(demoMenu);
+        new RgbSortAction(this).addTo(demoMenu);
         menuBar.add(demoMenu);
     }
 
@@ -136,6 +140,8 @@ public class MainWindow extends AppWindow {
 	{
 		this.view	= view;
 	}
+
+    @Override
     public void paint() {
     	buffer = this.view.paint(this.world, this.paintPanel);
         generationLabel.setText(" Generation: " + world.generation);

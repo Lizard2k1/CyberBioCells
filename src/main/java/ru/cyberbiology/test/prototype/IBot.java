@@ -1,6 +1,6 @@
 package ru.cyberbiology.test.prototype;
 
-import ru.cyberbiology.test.World;
+import java.awt.*;
 
 public interface IBot
 {
@@ -72,4 +72,8 @@ public interface IBot
     void step();
     int getAlive();
 	void relink(IBot[][] matrix);
+	void paint(Graphics g);
+	void setXY(int x, int y);
+	default void prep(int tx, int ty, int steps, Runnable onEnd) {}
+	default void swap(IBot iBot) {}
 }

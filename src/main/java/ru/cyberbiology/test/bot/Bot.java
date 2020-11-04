@@ -2,34 +2,15 @@ package ru.cyberbiology.test.bot;
 
 
 import ru.cyberbiology.test.World;
-import ru.cyberbiology.test.gene.GeneCareAbsolutelyDirection;
-import ru.cyberbiology.test.gene.GeneCareRelativeDirection;
-import ru.cyberbiology.test.gene.GeneChangeDirectionAbsolutely;
-import ru.cyberbiology.test.gene.GeneChangeDirectionRelative;
-import ru.cyberbiology.test.gene.GeneEatAbsoluteDirection;
-import ru.cyberbiology.test.gene.GeneEatRelativeDirection;
-import ru.cyberbiology.test.gene.GeneFlattenedHorizontally;
-import ru.cyberbiology.test.gene.GeneFullAroud;
-import ru.cyberbiology.test.gene.GeneGiveAbsolutelyDirection;
-import ru.cyberbiology.test.gene.GeneGiveRelativeDirection;
-import ru.cyberbiology.test.gene.GeneIsHealthGrow;
-import ru.cyberbiology.test.gene.GeneIsMineralGrow;
-import ru.cyberbiology.test.gene.GeneIsMultiCell;
-import ru.cyberbiology.test.gene.GeneLookRelativeDirection;
-import ru.cyberbiology.test.gene.GeneMineralToEnergy;
-import ru.cyberbiology.test.gene.GeneMutate;
-import ru.cyberbiology.test.gene.GeneMyHealth;
-import ru.cyberbiology.test.gene.GeneMyLevel;
-import ru.cyberbiology.test.gene.GeneMyMineral;
-import ru.cyberbiology.test.gene.GenePhotosynthesis;
-import ru.cyberbiology.test.gene.GeneStepInAbsolutelyDirection;
-import ru.cyberbiology.test.gene.GeneStepInRelativeDirection;
-import ru.cyberbiology.test.gene.GeneСreateBot;
-import ru.cyberbiology.test.gene.GeneСreateCell;
+import ru.cyberbiology.test.gene.*;
 import ru.cyberbiology.test.prototype.IBot;
 import ru.cyberbiology.test.prototype.IWorld;
 import ru.cyberbiology.test.prototype.gene.IBotGeneController;
 
+import java.awt.*;
+
+import static ru.cyberbiology.test.util.Consts.BOTH;
+import static ru.cyberbiology.test.util.Consts.BOTW;
 
 public class Bot implements IBot {
 
@@ -1295,5 +1276,43 @@ public class Bot implements IBot {
     @Override
     public void genAttack() {
         this.botGenAttack(this);
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        paint(g, x * BOTW, y * BOTH);
+    }
+
+    protected boolean hasPos = false;
+    @Override
+    public void setXY(int x, int y) {
+        if (hasPos) {
+            return;
+        }
+        hasPos = true;
+        this.x = x;
+        this.y = y;
+    }
+
+    public void paint(Graphics g, int px, int py) {
+        if ((getAlive() == 1) || (getAlive() == 2)) {
+            g.setColor(new Color(200, 200, 200));
+            g.fillRect(px, py, BOTW, BOTH);
+            world.organic = world.organic + 1;
+        } else if (getAlive() == 3) {
+            g.setColor(Color.BLACK);
+            g.drawRect(px, py, BOTW, BOTH);
+//                    g.setColor(new Color(this.c_red, this.c_green, this.c_blue));
+            int green = (int) (this.c_green
+                    - ((this.c_green * this.health) / 2000));
+            if (green < 0) green = 0;
+            if (green > 255) green = 255;
+            int blue = (int) (this.c_blue * 0.8
+                    - ((this.c_blue * this.mineral) / 2000));
+            g.setColor(new Color(this.c_red, green, blue));
+//                    g.setColor(new Color(this.c_red, this.c_green, this.c_blue));
+            g.fillRect(px + 1, py + 1, BOTW - 1, BOTH - 1);
+            world.population = world.population + 1;
+        }
     }
 }

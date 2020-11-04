@@ -1,7 +1,6 @@
 package ru.cyberbiology.test.menu.file;
 
 import ru.cyberbiology.test.MainWindow;
-import ru.cyberbiology.test.World;
 import ru.cyberbiology.test.menu.MenuAction;
 import ru.cyberbiology.test.prototype.IWindow;
 
@@ -9,7 +8,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FilenameFilter;
 
 import static ru.cyberbiology.test.util.Consts.OPEN_TEXT;
 
@@ -54,8 +52,7 @@ public class OpenAction extends MenuAction {
 
     public void openFile(File f)
     {
-        World world = new World(window, 0, 0);
-        window.setWorld(world);
+        createWorld();
         world.openFile(f);
     }
 }
