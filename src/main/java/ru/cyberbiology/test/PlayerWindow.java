@@ -40,12 +40,11 @@ import ru.cyberbiology.test.util.ProjectProperties;
 import ru.cyberbiology.test.view.ViewBasic;
 import ru.cyberbiology.test.view.ViewMultiCell;
 
+import static ru.cyberbiology.test.util.Consts.*;
+
 public class PlayerWindow extends JFrame implements IWindow
 {
 	//public static PlayerWindow window;
-	
-	public static final int BOTW	= 4;
-	public static final int BOTH	= 4;
 	
     public static World world;
 

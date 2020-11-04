@@ -19,127 +19,33 @@
     <select>
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="BRANCH:origin/master" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:master" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41095dfc-b5ed-4496-9623-93c60955f9c4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/CyberBiology.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Bot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/World.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/Bot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/MainWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/PlayerWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/ViewMenuActionListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/World.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneAttack.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneCareAbsolutelyDirection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneCareRelativeDirection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneChangeDirectionAbsolutely.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneChangeDirectionRelative.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneEatAbsoluteDirection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneEatRelativeDirection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneFlattenedHorizontally.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneFullAroud.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneGiveAbsolutelyDirection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneGiveRelativeDirection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneIsHealthGrow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneIsMineralGrow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneIsMultiCell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneLookAbsoluteDirection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneLookRelativeDirection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneMineralToEnergy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneMutate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneMyHealth.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneMyLevel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneMyMineral.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GenePhotosynthesis.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneStepInAbsolutelyDirection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneStepInRelativeDirection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneСreateBot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/gene/GeneСreateCell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/prototype/IBot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/prototype/IWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/prototype/IWorld.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/prototype/gene/ABotGeneController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/prototype/gene/IBotGeneController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/prototype/record/AbstractRecordManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/prototype/record/IFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/prototype/record/IRecordManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/prototype/view/IView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/record/v0/PlaybackManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/record/v0/RecordManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/util/ProjectProperties.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/view/ViewBasic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/view/ViewMultiCell.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Bot.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/World.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/Bot.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/MainWindow.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/PlayerWindow.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/ViewMenuActionListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/World.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneAttack.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneCareAbsolutelyDirection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneCareRelativeDirection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneChangeDirectionAbsolutely.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneChangeDirectionRelative.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneEatAbsoluteDirection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneEatRelativeDirection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneFlattenedHorizontally.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneFullAroud.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneGiveAbsolutelyDirection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneGiveRelativeDirection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneIsHealthGrow.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneIsMineralGrow.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneIsMultiCell.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneLookAbsoluteDirection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneLookRelativeDirection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneMineralToEnergy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneMutate.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneMyHealth.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneMyLevel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneMyMineral.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GenePhotosynthesis.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneStepInAbsolutelyDirection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneStepInRelativeDirection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneСreateBot.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/gene/GeneСreateCell.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/prototype/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/prototype/IBot.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/prototype/IWindow.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/prototype/IWorld.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/prototype/gene/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/prototype/gene/ABotGeneController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/prototype/gene/IBotGeneController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/prototype/record/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/prototype/record/AbstractRecordManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/prototype/record/IFrame.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/prototype/record/IRecordManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/prototype/view/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/prototype/view/IView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/record/v0/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/record/v0/PlaybackManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/record/v0/RecordManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/util/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/util/ProjectProperties.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/view/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/view/ViewBasic.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ru/cyberbiology/test/view/ViewMultiCell.java" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/util/Consts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/CyberBiology.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CyberBiology.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/MainWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/PlayerWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/PlayerWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/World.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/World.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/view/ViewBasic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/view/ViewBasic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/view/ViewMultiCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/cyberbiology/test/view/ViewMultiCell.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -160,9 +66,41 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RunManager">
+    <configuration name="MainWindow" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ru.cyberbiology.test.MainWindow" />
+      <module name="CyberBiology" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.cyberbiology.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MainWindow" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -172,8 +110,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1604405254847</updated>
-      <workItem from="1604405256826" duration="286000" />
+      <workItem from="1604405256826" duration="1592000" />
     </task>
+    <task id="LOCAL-00001" summary="move code to src/main/java">
+      <created>1604405609175</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1604405609175</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,7 +141,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/master" />
+                        <option value="master" />
                       </list>
                     </value>
                   </entry>
@@ -208,42 +154,74 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="move code to src/main/java" />
+    <option name="LAST_COMMIT_MESSAGE" value="move code to src/main/java" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="174" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1604405509757">
+    <state x="440" y="94" key="#Project_Structure" timestamp="1604486698863">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="174" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604405509757" />
+    <state x="440" y="94" key="#Project_Structure/0.0.1920.1040@0.0.1920.1040" timestamp="1604486698863" />
+    <state x="414" y="174" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1604486735218">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="174" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604486735218" />
     <state x="689" y="321" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1604405503303">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="689" y="321" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604405503303" />
+    <state x="579" y="88" key="CommitChangelistDialog2" timestamp="1604405608186">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="579" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1604405608186" />
     <state x="740" y="261" key="FileChooserDialogImpl" timestamp="1604405155895">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="261" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1604405155895" />
-    <state width="1877" height="344" key="GridCell.Tab.0.bottom" timestamp="1604405253371">
+    <state width="1877" height="338" key="GridCell.Tab.0.bottom" timestamp="1604486885303">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="344" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1604405253371" />
-    <state width="1877" height="344" key="GridCell.Tab.0.center" timestamp="1604405253371">
+    <state width="1877" height="338" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
+    <state width="1877" height="338" key="GridCell.Tab.0.center" timestamp="1604486885303">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="344" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1604405253371" />
-    <state width="1877" height="344" key="GridCell.Tab.0.left" timestamp="1604405253371">
+    <state width="1877" height="338" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
+    <state width="1877" height="338" key="GridCell.Tab.0.left" timestamp="1604486885303">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="344" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1604405253371" />
-    <state width="1877" height="344" key="GridCell.Tab.0.right" timestamp="1604405253371">
+    <state width="1877" height="338" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
+    <state width="1877" height="338" key="GridCell.Tab.0.right" timestamp="1604486885303">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="344" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1604405253371" />
-    <state x="841" y="240" key="RollbackChangesDialog" timestamp="1604405021286">
+    <state width="1877" height="338" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
+    <state width="1877" height="338" key="GridCell.Tab.1.bottom" timestamp="1604486885303">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="841" y="240" key="RollbackChangesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604405021286" />
+    <state width="1877" height="338" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
+    <state width="1877" height="338" key="GridCell.Tab.1.center" timestamp="1604486885303">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="338" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
+    <state width="1877" height="338" key="GridCell.Tab.1.left" timestamp="1604486885303">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="338" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
+    <state width="1877" height="338" key="GridCell.Tab.1.right" timestamp="1604486885303">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="338" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1604486885303" />
+    <state x="841" y="240" key="RollbackChangesDialog" timestamp="1604405572563">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="841" y="240" key="RollbackChangesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604405572563" />
     <state x="440" y="94" key="SettingsEditor" timestamp="1604405542357">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="440" y="94" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1604405542357" />
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1604405751768">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1604405751768" />
   </component>
 </project>

@@ -40,15 +40,14 @@ import ru.cyberbiology.test.util.ProjectProperties;
 import ru.cyberbiology.test.view.ViewBasic;
 import ru.cyberbiology.test.view.ViewMultiCell;
 
+import static ru.cyberbiology.test.util.Consts.*;
+
 public class MainWindow extends JFrame implements IWindow
 {
 	JMenuItem runItem;
 	
 	 public static MainWindow window;
-	
-	public static final int BOTW	= 4;
-	public static final int BOTH	= 4;
-	
+
     public static World world;
    // JPanel paintPanel = new JPanel(new FlowLayout());
 

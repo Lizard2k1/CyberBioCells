@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 import ru.cyberbiology.test.World;
 import ru.cyberbiology.test.prototype.view.IView;
 
+import static ru.cyberbiology.test.util.Consts.*;
+
 public class ViewMultiCell implements IView
 {
 
@@ -30,7 +32,7 @@ public class ViewMultiCell implements IView
     	//подеменяем графику на временный буфер
     	Graphics g = buf.getGraphics();
     	
-        g.drawRect(0, 0, world.width * World.BOTW + 1, world.height * 4 + 1);
+        g.drawRect(0, 0, world.width * BOTW + 1, world.height * 4 + 1);
 
         world.population = 0;
         world.organic = 0;
@@ -38,28 +40,28 @@ public class ViewMultiCell implements IView
             for (int x = 0; x < world.width; x++) {
                 if (world.matrix[x][y] == null) {
                     g.setColor(Color.WHITE);
-                    g.fillRect(x * World.BOTW,y * World.BOTH, World.BOTW, World.BOTH);
+                    g.fillRect(x * BOTW,y * BOTH, BOTW, BOTH);
                 } else if ((world.matrix[x][y].alive == 1) || (world.matrix[x][y].alive == 2)) {
                     g.setColor(new Color(200, 200, 200));
-                    g.fillRect(x * World.BOTW, y * World.BOTH, World.BOTW, World.BOTH);
+                    g.fillRect(x * BOTW, y * BOTH, BOTW, BOTH);
                     world.organic = world.organic + 1;
                 } else if (world.matrix[x][y].alive == 3) {
                 	g.setColor(Color.BLACK);
-                    g.drawRect(x * World.BOTW, y * World.BOTH, World.BOTW, World.BOTH);
+                    g.drawRect(x * BOTW, y * BOTH, BOTW, BOTH);
                 	switch(world.matrix[x][y].isMulti())
             		{
            			
             			case 1:// - есть MPREV,
     	                    g.setColor(Color.MAGENTA);
-    	                    g.fillRect(x * World.BOTW + 1, y * World.BOTH + 1, World.BOTW-1, World.BOTH-1);
+    	                    g.fillRect(x * BOTW + 1, y * BOTH + 1, BOTW-1, BOTH-1);
             				break;
             			case 2:// - есть MNEXT,
     	                    g.setColor(Color.BLACK);
-    	                    g.fillRect(x * World.BOTW + 1, y * World.BOTH + 1, World.BOTW-1, World.BOTH-1);
+    	                    g.fillRect(x * BOTW + 1, y * BOTH + 1, BOTW-1, BOTH-1);
             				break;
             			case 3:// есть MPREV и MNEXT
     	                    g.setColor(Color.MAGENTA);
-    	                    g.fillRect(x * World.BOTW + 1, y * World.BOTH + 1, World.BOTW-1, World.BOTH-1);
+    	                    g.fillRect(x * BOTW + 1, y * BOTH + 1, BOTW-1, BOTH-1);
             				break;
             			default:
     	                    int green = (int) (world.matrix[x][y].c_green - ((world.matrix[x][y].c_green * world.matrix[x][y].health) / 2000));
@@ -67,7 +69,7 @@ public class ViewMultiCell implements IView
     	                    if (green > 255) green = 255;
     	                    int blue = (int) (world.matrix[x][y].c_blue * 0.8 - ((world.matrix[x][y].c_blue * world.matrix[x][y].mineral) / 2000));
     	                    g.setColor(new Color(world.matrix[x][y].c_red, green, blue));
-    	                    g.fillRect(x * World.BOTW + 1, y * World.BOTH + 1, World.BOTW-1, World.BOTH-1);
+    	                    g.fillRect(x * BOTW + 1, y * BOTH + 1, BOTW-1, BOTH-1);
             					break;
             		}
                     

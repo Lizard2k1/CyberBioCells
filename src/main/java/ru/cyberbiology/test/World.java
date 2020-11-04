@@ -17,9 +17,6 @@ public class World implements IWorld
 	PlaybackManager playback;
 	IRecordManager recorder;
 
-	public static final int BOTW = 4;
-	public static final int BOTH = 4;
-
 	public int width;
 	public int height;
 
