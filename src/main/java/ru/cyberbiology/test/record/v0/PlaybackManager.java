@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import ru.cyberbiology.test.Bot;
+import ru.cyberbiology.test.bot.Bot;
 import ru.cyberbiology.test.World;
 import ru.cyberbiology.test.prototype.IWorld;
 import ru.cyberbiology.test.prototype.record.IFrame;

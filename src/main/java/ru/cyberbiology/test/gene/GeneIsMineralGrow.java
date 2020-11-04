@@ -7,7 +7,7 @@ import ru.cyberbiology.test.prototype.gene.ABotGeneController;
 /********************************************************************
 //............... минералы прибавляются? ............................
             if (command == 45) {  // если глубина больше половины, то он начинает накапливать минералы
-                if (y > (World.simulation.height / 2)) {
+                if (y > (ru.cyberbiology.World.simulation.height / 2)) {
                     botIndirectIncCmdAddress(this, 1);
                 } else {
                     botIndirectIncCmdAddress(this, 2);

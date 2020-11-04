@@ -1,3 +1,4 @@
+package ru.cyberbiology;
 
 import java.awt.*;
 import javax.swing.*;

@@ -1,6 +1,6 @@
 package ru.cyberbiology.test.prototype;
 
-import ru.cyberbiology.test.Bot;
+import ru.cyberbiology.test.bot.Bot;
 import ru.cyberbiology.test.util.ProjectProperties;
 
 public interface IWorld
@@ -18,7 +18,7 @@ public interface IWorld
 
 	public ProjectProperties getProperties();
 
-	public Bot[][] getWorldArray();
+	public IBot[][] getWorldArray();
 
 	public void restoreLinks();
 

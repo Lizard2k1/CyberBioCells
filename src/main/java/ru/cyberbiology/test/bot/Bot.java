@@ -1,6 +1,37 @@
-import java.util.ArrayList;
+package ru.cyberbiology.test.bot;
 
-public class Bot {
+
+import ru.cyberbiology.test.World;
+import ru.cyberbiology.test.gene.GeneCareAbsolutelyDirection;
+import ru.cyberbiology.test.gene.GeneCareRelativeDirection;
+import ru.cyberbiology.test.gene.GeneChangeDirectionAbsolutely;
+import ru.cyberbiology.test.gene.GeneChangeDirectionRelative;
+import ru.cyberbiology.test.gene.GeneEatAbsoluteDirection;
+import ru.cyberbiology.test.gene.GeneEatRelativeDirection;
+import ru.cyberbiology.test.gene.GeneFlattenedHorizontally;
+import ru.cyberbiology.test.gene.GeneFullAroud;
+import ru.cyberbiology.test.gene.GeneGiveAbsolutelyDirection;
+import ru.cyberbiology.test.gene.GeneGiveRelativeDirection;
+import ru.cyberbiology.test.gene.GeneIsHealthGrow;
+import ru.cyberbiology.test.gene.GeneIsMineralGrow;
+import ru.cyberbiology.test.gene.GeneIsMultiCell;
+import ru.cyberbiology.test.gene.GeneLookRelativeDirection;
+import ru.cyberbiology.test.gene.GeneMineralToEnergy;
+import ru.cyberbiology.test.gene.GeneMutate;
+import ru.cyberbiology.test.gene.GeneMyHealth;
+import ru.cyberbiology.test.gene.GeneMyLevel;
+import ru.cyberbiology.test.gene.GeneMyMineral;
+import ru.cyberbiology.test.gene.GenePhotosynthesis;
+import ru.cyberbiology.test.gene.GeneStepInAbsolutelyDirection;
+import ru.cyberbiology.test.gene.GeneStepInRelativeDirection;
+import ru.cyberbiology.test.gene.GeneСreateBot;
+import ru.cyberbiology.test.gene.GeneСreateCell;
+import ru.cyberbiology.test.prototype.IBot;
+import ru.cyberbiology.test.prototype.IWorld;
+import ru.cyberbiology.test.prototype.gene.IBotGeneController;
+
+
+public class Bot implements IBot {
 
     public int adr;
     public int x;
@@ -15,24 +46,89 @@ public class Bot {
     public Bot mprev;
     public Bot mnext;
 
-    public int[] mind = new int[64];                // геном бота содержит 64 команды
+    //todo temporary make public - strongly awaiting refactor for remove static dirt
+    public static IBotGeneController[] geneController = new IBotGeneController[64];
+
+    static {
+        geneController[23] = new GeneChangeDirectionRelative(); //23 сменить направление относительно
+        geneController[24] = new GeneChangeDirectionAbsolutely(); //24 сменить направление абсолютно
+        geneController[25] = new GenePhotosynthesis();//25 фотосинтез
+        geneController[26] = new GeneStepInRelativeDirection();//26 шаг   в относительном направлении
+        geneController[27] = new GeneStepInAbsolutelyDirection();//27 шаг   в абсолютном направлении
+        geneController[28] = new GeneEatRelativeDirection();//28 шаг  съесть в относительном направлении
+        geneController[29] = new GeneEatAbsoluteDirection();//29 шаг  съесть в абсолютном направлении
+        geneController[30] = new GeneLookRelativeDirection();//30 шаг  посмотреть в относительном направлении
+
+        geneController[32] = new GeneCareRelativeDirection();//32 шаг делится   в относительном напралении
+        geneController[42] = geneController[32];
+
+        geneController[33] = new GeneCareAbsolutelyDirection();//33 шаг делится   в абсолютном напралении
+        geneController[50] = geneController[33];
+
+        geneController[34] = new GeneGiveRelativeDirection();//34 шаг отдать   в относительном напралении
+        geneController[51] = geneController[34];
+
+        geneController[35] = new GeneGiveAbsolutelyDirection();//35 шаг отдать   в абсолютном напралении
+        geneController[52] = geneController[35];
+
+        geneController[36] = new GeneFlattenedHorizontally();//36 выравнится по горизонтали
+        geneController[37] = new GeneMyLevel();//37 высота бота
+        geneController[38] = new GeneMyHealth();//38 здоровье бота
+        geneController[39] = new GeneMyMineral();//39 минералы бота
+        geneController[40] = new GeneСreateCell();//40 создать клетку многоклеточного
+        geneController[41] = new GeneСreateBot();//40 создать клетку одноклеточного
+        //42 занято
+        geneController[43] = new GeneFullAroud();//43  окружен ли бот
+        geneController[44] = new GeneIsHealthGrow();//44  окружен ли бот
+        geneController[45] = new GeneIsMineralGrow();//45  прибавляются ли минералы
+        geneController[46] = new GeneIsMultiCell();//46  многоклеточный
+        geneController[47] = new GeneMineralToEnergy();//47  преобразовать минералы в энерию
+        geneController[48] = new GeneMutate();//48  мутировать
 
 
-    public int MIND_SIZE = 64; //Объем генома
-    //===================          BOT.LIVING                 ======================
-    //======= состяние бота, которое отмеченно для каждого бота в массиве bots[] ====================
-    public int LV_FREE = 0;  // место свободно, здесь может быть размещен новый бот
-    public int LV_ORGANIC_HOLD = 1;  // бот погиб и представляет из себя органику в подвешенном состоянии
-    public int LV_ORGANIC_SINK = 2;  // ораника начинает тонуть, пока не встретит препятствие, после чего остается в подвешенном состоянии(LV_ORGANIC_HOLD)
-    public int LV_ALIVE = 3;  // живой бот
-
-
-    public Bot() {
-        direction = 2;
-        health = 5;
-        alive = 3;
     }
 
+    public static final int MIND_SIZE = 64; //Объем генома
+    public byte[] mind = new byte[MIND_SIZE];                // геном бота содержит 64 команды
+
+    //===================          BOT.LIVING                 ======================
+    //======= состяние бота, которое отмеченно для каждого бота в массиве bots[] ====================
+    /**
+     * место свободно, здесь может быть размещен новый бот
+     */
+    public int LV_FREE = 0;
+    /**
+     * бот погиб и представляет из себя органику в подвешенном состоянии
+     */
+    public int LV_ORGANIC_HOLD = 1;
+    /**
+     * ораника начинает тонуть, пока не встретит препятствие, после чего остается в подвешенном состоянии(LV_ORGANIC_HOLD)
+     */
+    public int LV_ORGANIC_SINK = 2;
+    /**
+     * живой бот
+     */
+    public int LV_ALIVE = 3;  //
+
+    /**
+     * Поля нужны для сериализации ботов
+     * координаты соседних клеток многоклеточного
+     */
+    public int mprevX;
+    public int mprevY;
+    public int mnextX;
+    public int mnextY;
+
+    World world;
+
+    public Bot(World world) {
+        this.world = world;
+        direction = 2;
+        health = 5;
+        alive = LV_ALIVE;
+        //Class[] parameterTypes = new Class[] { ru.cyberbiology.Bot.class};
+        //BotCommandController.class.getMethod(name, parameterTypes);
+    }
 
 
     // ====================================================================
@@ -40,264 +136,33 @@ public class Bot {
     // =========== в ней выполняется код его мозга-генома  ================
     // ====================================================================
     public void step() {
-        if (alive == 0 || alive == 1 || alive == 2) return;   //Это труп - выходим!
+    	/*
+    	if(alive == LV_ORGANIC_SINK || alive == LV_ORGANIC_HOLD)
+    	{
+    		botMove(this, 5, 1);
+    	}*/
+        if (alive == LV_FREE || alive == LV_ORGANIC_HOLD || alive == LV_ORGANIC_SINK) {
+            botMove(this, 5, 1);
+            return;   //Это труп - выходим!
+        }
 
-        for (int cyc = 0; cyc < 15; cyc++) {
+        IBotGeneController cont;
+
+        for (int cyc = 0; cyc < MIND_SIZE / 4; cyc++) {//15
             int command = mind[adr];  // текущая команда
-//*******************************************************************
-//...............  сменить направление относительно   ....
-            if (command == 23) {                            // вычисляем новое направление
-                int param = botGetParam(this) % 8;          // берём следующи байт за командой и вычисляем остаток от деления на 8
-                int newdrct = direction + param;            // полученное число прибавляем к значению направления бота
-                if (newdrct >= 8) {
-                    newdrct = newdrct - 8;
-                }// результат должен быть в пределах от 0 до 8
-                direction = newdrct;
-                botIncCommandAddress(this, 2);                              // адрес текущей команды увеличивается на 2,
-            }
-//...............  сменить направление абсолютно   ....
-            if (command == 24) {                // записываем новое значение направления
-                direction = botGetParam(this) % 8;  // берем следующий байт и вычисляем остаток от деления на 8
-                botIncCommandAddress(this, 2);                  // адрес текущей команды увеличивается на 2,
-            }
-//**********************************************
-//...............  фотосинтез ................
-            if (command == 25) {
-                botEatSun(this);                            // выполняем команду фотосинтеза
-                botIncCommandAddress(this, 1);                              // адрес текущей команды увеличивается на 1
-                break;         // выходим, так как команда шагнуть - завершающая
-            }
 
-//*******************************************************************
-//...............  шаг  в относительном напралении  .................
-            if (command == 26) {
-                if (isMulti(this) == 0) {           // бот многоклеточный? перемещаются только одноклеточные
-                    int drct = botGetParam(this) % 8;   // вычисляем направление из следующего за командой байта
-                    botIndirectIncCmdAddress(this, botMove(this, drct, 0)); // меняем адрес текущей команды
-                    // в зависимости от того, что было в этом направлении
-                    // смещение условного перехода 2-пусто  3-стена  4-органика 5-бот 6-родня
-                } else {
-                    botIncCommandAddress(this, 2);
-                }
-                break;         // выходим, так как команда шагнуть - завершающая
-            }
-//...............  шаг   в абсолютном направлении     .................
-            if (command == 27) {
-                if (isMulti(this) == 0) {
-                    int drct = botGetParam(this) % 8;
-                    botIndirectIncCmdAddress(this, botMove(this, drct, 1));
-                }
-                break;
-            }
-//************************************************************************
-//..............   съесть в относительном напралении       ...............
-            if (command == 28) {
-                int drct = botGetParam(this) % 8;       // вычисляем направление из следующего за командой байта
-                botIndirectIncCmdAddress(this, botEat(this, drct, 0)); // меняем адрес текущей команды
-                // в зависимости от того, что было в этом направлении
-                //смещение условного перехода  стена - 2 пусто - 3 органика - 4 живой - 5
-                break;  // выходим, так как команда шагнуть - завершающая
-            }
-//..............   съесть  в абсолютном направлении      ...............
-            if (command == 29) {  //смещение условного перехода  стена - 2 пусто - 3 органика - 4 живой - 5
-                int drct = botGetParam(this) % 8;
-                botIndirectIncCmdAddress(this, botEat(this, drct, 1));
-                break;
-            }
-//******************************************************************************************
-//.............   посмотреть  в относительном напралении ...................................
-            if (command == 30) {
-                int drct = botGetParam(this) % 8;    // вычисляем направление из следующего за командой байта
-                botIndirectIncCmdAddress(this, botSeeBots(this, drct, 0)); // меняем адрес текущей команды
-                // в зависимости от того, что было в этом направлении
-                // пусто - 2 стена - 3 органик - 4 бот -5 родня -  6
-            }
-//.............   посмотреть в абсолютном направлении ...................................
-            if (command == 31)// пусто - 2 стена - 3 органик - 4 бот -5 родня -  6
+            // Получаем обработчика команды
+            cont = geneController[command];
+            if (cont != null)// если обработчик такой команды назначен
             {
-                int drct = botGetParam(this) % 8;
-                botIndirectIncCmdAddress(this, botSeeBots(this, drct, 1));
-            }
-
-//******************************************************************************
-// делиться - если у бота больше энергии или минералов, чем у соседа, то они распределяются поровну
-//.............   делится   в относительном напралении  ........................
-            if ((command == 32) || (command == 42)) {   // здесь я увеличил шансы появления этой команды
-                int drct = botGetParam(this) % 8;    // вычисляем направление из следующего за командой байта
-                botIndirectIncCmdAddress(this, botCare(this, drct, 0)); // меняем адрес текущей команды
-                // в зависимости от того, что было в этом направлении
-                // стена - 2 пусто - 3 органика - 4 удачно - 5
-            }
-            //.............   делится  в абсолютном направлении ........................
-            if ((command == 33) || (command == 50)) {    // здесь я увеличил шансы появления этой команды
-                int drct = botGetParam(this) % 8;
-                botIndirectIncCmdAddress(this, botCare(this, drct, 1));  // стена - 2 пусто - 3 органика - 4 удачно - 5
-            }
-//****************************************************************************
-// отдать - безвозмездно отдать часть энергии и минералов соседу
-//.............   отдать   в относительном напралении  ........................
-            if ((command == 34) || (command == 51)) {    // здесь я увеличил шансы появления этой команды
-                int drct = botGetParam(this) % 8;    // вычисляем направление из следующего за командой байта
-                botIndirectIncCmdAddress(this, botGive(this, drct, 0)); // меняем адрес текущей команды
-                // в зависимости от того, что было в этом направлении
-                // стена - 2 пусто - 3 органика - 4 удачно - 5
-            }
-//.............   отдать  в абсолютном направлении  ........................
-            if ((command == 35) || (command == 52)) {      // здесь я увеличил шансы появления этой команды
-                int drct = botGetParam(this) % 8;
-                botIndirectIncCmdAddress(this, botGive(this, drct, 1)); // стена - 2 пусто - 3 органика - 4 удачно - 5
-            }
-
-//*********************************************************************************
-//...................   выравнится по горизонтали  ...............................
-            if (command == 36) {
-                if (Math.random() < 0.5) {              // кидаем монетку
-                    direction = 3;                 // если ноль, то поворачиваем в одну сторону
-                } else {
-                    direction = 7;                 // если один, то поворачиваем в другую сторону
-                }
-                botIncCommandAddress(this, 1); // увеличиваем указатель текущей команды на 1
-            }
-
-//***********************************************************************
-//...................  какой мой уровень (на какой высоте бот)  .........
-            if (command == 37) {   // у меня поле высотой в 96 клеток
-                // байт в геноме может иметь значение от 0 до 63
-                // умножая значение байта на 1,5 получаем значение от 0 до 95
-                int param = botGetParam(this) * World.simulation.height / MIND_SIZE;   // берем следующий за командой байт и умножаем на 1,5
-                // если уровень бота ниже, чем полученное значение,
-                // то прибавляем к указатели текущей команды значение 2-го байта, после выполняемой команды
-                if (y < param) {
-                    botIndirectIncCmdAddress(this, 2);
-                } else { // иначе прибавляем к указатели текущей команды значение 3-го байта, после выполняемой команды
-                    botIndirectIncCmdAddress(this, 3);
-                }
-            }
-//**************************************************************************
-//...................  какое моё здоровье  ...............................
-            if (command == 38) {   // максимальное здоровье  999
-                // байт в геноме может иметь значение от 0 до 63
-                // умножая значение байта на 15 получаем значение от 0 до 945
-                int param = botGetParam(this) * 1000 / MIND_SIZE;   // берем следующий за командой байт и умножаем на 15
-                // если здоровье бота ниже, чем полученное значение,
-                // то прибавляем к указатели текущей команды значение 2-го байта, после выполняемой команды
-                if (health < param) {
-                    botIndirectIncCmdAddress(this, 2);
-                } else { // иначе прибавляем к указатели текущей команды значение 3-го байта, после выполняемой команды
-                    botIndirectIncCmdAddress(this, 3);
-                }
-            }
-//*********************************************************************
-//...................сколько  минералов ...............................
-            if (command == 39) {
-                int param = botGetParam(this) * 1000 / MIND_SIZE;
-                if (mineral < param) {
-                    botIndirectIncCmdAddress(this, 2);
-                } else {
-                    botIndirectIncCmdAddress(this, 3);
-                }
-            }
-//****************************************************************************
-//...........  многоклеточность ( создание потомка, приклееного к боту )......
-            if (command == 40) {   // функция isMulti() возвращает
-                // 0 - если бот не входит в многоклеточную цепочку
-                // 1 или 2 - если бот является крайним в цепочке
-                // 3 - если бот внутри цепочки
-                int a = isMulti(this);    // 0 - нету, 1 - есть MPREV, 2 - есть MNEXT, 3 есть MPREV и MNEXT
-                if (a == 3) {
-                    botDouble(this);
-                } else {    // если бот уже находится внутри цепочки, то новый бот рождается свободным
-                    botMulti(this);     // в другом случае, новый бот рождается приклеенным к боту-предку
-                }
-                botIncCommandAddress(this, 1);   // увеличиваем адрес текущей команды на 1
-                break; // выходим, так как команда родить - завершающая
-            }
-//...............  деление (создание свободноживущего потомка) ................
-            if (command == 41) {
-                int a = isMulti(this);
-                if ((a == 0) || (a == 3)) {
-                    botDouble(this);  // если бот свободный или внутри цепочки, , то новый бот рождается свободным
-                } else {
-                    botMulti(this);  // если бот крайний в цепочке, новый бот рождается приклеенным к боту-предку
-                }
-                botIncCommandAddress(this, 1);
+                if (cont.onGene(this)) // передаем ему управление
+                    break; // если обрабочик говорит, что он последний - завершаем цикл?
+            } else {//если ни с одной команд не совпало значит безусловный переход прибавляем к указателю текущей команды значение команды
+                botIncCommandAddress(this, command);
                 break;
             }
-//****************************************************
-//...............  окружен ли бот    ................
-            if (command == 43) {   // функция full_aroud() возвращает  1, если бот окружен и 2, если нет
-                // увеличиваем значение указателя текущей команды
-                // на значение следующего байта после команды или 2-го байта после команды
-                // в зависимости от того, окружен бот или нет
-                botIndirectIncCmdAddress(this, fullAroud(this));
-            }
-//.............. приход энергии есть? ........................
-            if (command == 44) {  // is_health_grow() возвращает 1, если энегрия у бота прибавляется, иначе - 2
-                botIndirectIncCmdAddress(this, isHealthGrow(this));
-            }
-//******************************************************************
-//............... минералы прибавляются? ............................
-            if (command == 45) {  // если глубина больше половины, то он начинает накапливать минералы
-                if (y > (World.simulation.height / 2)) {
-                    botIndirectIncCmdAddress(this, 1);
-                } else {
-                    botIndirectIncCmdAddress(this, 2);
-                }
-            }
-//*************************************************************
-//.............. многоклеточный ли я ? ........................
-            if (command == 46) {
-                int mu = isMulti(this);
-                if (mu == 0) {
-                    botIndirectIncCmdAddress(this, 1); // бот свободно живущий
-                } else {
-                    if (mu == 3) {
-                        botIndirectIncCmdAddress(this, 3); // бот внутри цепочки
-                    } else {
-                        botIndirectIncCmdAddress(this, 2); // бот скраю цепочки
-                    }
-                }
-            }
-//**********************************************************************
-//.................. преобразовать минералы в энерию ...................
-            if (command == 47) {
-                botMineral2Energy(this);
-                botIncCommandAddress(this, 1);
-                break;      // выходим, так как команда - завершающая
-            }
-//*********************************************************************
-//................      мутировать   ...................................
-// спорная команда, во время её выполнения меняются случайным образом две случайные команды
-// читал, что микроорганизмы могут усилить вероятность мутации своего генома в неблагоприятных условиях
-            if (command == 48) {
-                int ma = (int) (Math.random() * 64);  // 0..63
-                int mc = (int) (Math.random() * 64);  // 0..63
-                mind[ma] = mc;
-
-                ma = (int) (Math.random() * 64);  // 0..63
-                mc = (int) (Math.random() * 64);  // 0..63
-                mind[ma] = mc;
-                botIncCommandAddress(this, 1);
-                break;     // выходим, так как команда мутировать - завершающая
-            }
-
-//*********************************************************************
-//................   генная атака  ...................................
-            if (command == 49) {  // бот атакует геном соседа, на которого он повернут
-                botGenAttack(this); // случайным образом меняет один байт
-                botIncCommandAddress(this, 1);
-                break; // выходим, так как команда мутировать - завершающая
-            }        // после её выполнения, управление передаётся следующему боту
         }
 
-//=======================================================================
-//................    если ни с одной команд не совпало .................
-//................    значит безусловный переход        .................
-//.....   прибавляем к указателю текущей команды значение команды   .....
-        int command = mind[adr];  // текущая команда
-        if (((command >= 0) && (command <= 22)) || ((command >= 53) && (command <= 63))) {
-            botIncCommandAddress(this, command);
-        }
 
 //###########################################################################
 //.......  выход из функции и передача управления следующему боту   ........
@@ -323,16 +188,16 @@ public class Bot {
                 mineral = m;
                 nb.mineral = m;
                 pb.mineral = m;
-                    // делим энергию ................................................................
-                    // проверим, являются ли следующий и предыдущий боты в цепочке крайними .........
-                    // если они не являются крайними, то распределяем энергию поровну       .........
-                    // связанно это с тем, что в крайних ботах в цепочке должно быть больше энергии ..
-                    // что бы они плодили новых ботов и удлиняли цепочку
+                // делим энергию ................................................................
+                // проверим, являются ли следующий и предыдущий боты в цепочке крайними .........
+                // если они не являются крайними, то распределяем энергию поровну       .........
+                // связанно это с тем, что в крайних ботах в цепочке должно быть больше энергии ..
+                // что бы они плодили новых ботов и удлиняли цепочку
                 int apb = isMulti(pb);
                 int anb = isMulti(nb);
                 if ((anb == 3) && (apb == 3)) { // если следующий и предыдущий боты не являются крайними
-                                                 // то распределяем энергию поровну
-                    int h =  health + nb.health + pb.health;
+                    // то распределяем энергию поровну
+                    int h = health + nb.health + pb.health;
                     h = h / 3;
                     health = h;
                     nb.health = h;
@@ -344,8 +209,8 @@ public class Bot {
                 Bot pb = mprev; // ссылка на предыдущего бота
                 int apb = isMulti(pb);  // проверим, является ли предыдущий бот крайним в цепочке
                 if (apb == 3) {   // если нет, то распределяем энергию в пользу текущего бота
-                                   // так как он крайний и ему нужна энергия для роста цепочки
-                    int h =  health + pb.health;
+                    // так как он крайний и ему нужна энергия для роста цепочки
+                    int h = health + pb.health;
                     h = h / 4;
                     health = h * 3;
                     pb.health = h;
@@ -356,46 +221,82 @@ public class Bot {
                 Bot nb = mnext; // ссылка на следующего бота
                 int anb = isMulti(nb);   // проверим, является ли следующий бот крайним в цепочке
                 if (anb == 3) {      // если нет, то распределяем энергию в пользу текущего бота
-                                      // так как он крайний и ему нужна энергия для роста цепочки
-                    int h =  health + nb.health;
+                    // так как он крайний и ему нужна энергия для роста цепочки
+                    int h = health + nb.health;
                     h = h / 4;
                     health = h * 3;
                     nb.health = h;
                 }
             }
+            //******************************************************************************
+            //??????????????????????????????????????????????
             //... проверим уровень энергии у бота, возможно пришла пора помереть или родить
+            // Вопрос стоит ли так делать, родждение прописано в генных командах
             if (health > 999) {    // если энергии больше 999, то плодим нового бота
                 if ((a == 1) || (a == 2)) {
                     botMulti(this); // если бот был крайним в цепочке, то его потомок входит в состав цепочки
                 } else {
                     botDouble(this); // если бот был свободным или находился внутри цепочки
+                    // то его потомок рождается свободным
                 }
-            }                                               // то его потомок рождается свободным
-            health =  health - 3;   // каждый ход отнимает 3 единички здоровья(энегрии)
-            if (health < 1) {                    // если энергии стало меньше 1
-                bot2Organic(this);                                // то время умирать, превращаясь в огранику
-                return;                        // и передаем управление к следующему боту
+            }
+            health = health - 3;   // каждый ход отнимает 3 единички здоровья(энегрии)
+            if (health < 1) {       // если энергии стало меньше 1
+                bot2Organic(this);  // то время умирать, превращаясь в огранику
+                return;            // и передаем управление к следующему боту
             }
             // если бот находится на глубине ниже 48 уровня
             // то он автоматом накапливает минералы, но не более 999
-            if (y > World.simulation.height / 2) {
+            if (y > world.height / 2) {
                 mineral = mineral + 1;
-                if (y > World.simulation.height / 6 * 4) { mineral = mineral + 1; }
-                if (y > World.simulation.height / 6 * 5) { mineral = mineral + 1; }
-                if (mineral > 999) { mineral = 999; }
+                if (y > world.height / 6 * 4) {
+                    mineral = mineral + 1;
+                }
+                if (y > world.height / 6 * 5) {
+                    mineral = mineral + 1;
+                }
+                if (mineral > 999) {
+                    mineral = 999;
+                }
             }
         }
     }
 
+    @Override
+    public IWorld getWorld() {
+        return this.world;
+    }
 
+    @Override
+    public int getAlive() {
+        return alive;
+    }
 
-
-    //жжжжжжжжжжжжжжжжжжжхжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжж
+    @Override
+    public void relink(IBot[][] matrix) {
+        if(this.mprevX>-1 && this.mprevY>-1)
+        {
+            this.mprev	= (Bot) matrix[this.mprevX][this.mprevY];
+        }
+        if(this.mnextX>-1 && this.mnextY>-1)
+        {
+            this.mnext	= (Bot) matrix[this.mnextX][this.mnextY];
+        }
+    }
+//жжжжжжжжжжжжжжжжжжжхжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжж
     // -- получение Х-координаты рядом        ---------
     //  с био по относительному направлению  ----------
     // in - номер бота, направление       --------------
     // out - X -  координата             --------------
-    public int xFromVektorR(Bot bot, int n) {
+
+    /**
+     * получение Х-координаты рядом с био по относительному направлению
+     *
+     * @param bot бот для проведения операции
+     * @param n   направление
+     * @return X -  координата
+     */
+    int xFromVektorR(Bot bot, int n) {
         int xt = bot.x;
         n = n + bot.direction;
         if (n >= 8) {
@@ -404,11 +305,11 @@ public class Bot {
         if (n == 0 || n == 6 || n == 7) {
             xt = xt - 1;
             if (xt == -1) {
-                xt = World.simulation.width - 1;
+                xt = world.width - 1;
             }
         } else if (n == 2 || n == 3 || n == 4) {
             xt = xt + 1;
-            if (xt == World.simulation.width) {
+            if (xt == world.width) {
                 xt = 0;
             }
         }
@@ -420,16 +321,24 @@ public class Bot {
     //  с био по абсолютному направлению     ----------
     // in - номер био, направление       --------------
     // out - X -  координата             --------------
-    public int xFromVektorA(Bot bot, int n) {
+
+    /**
+     * получение Х-координаты рядом с био по абсолютному направлению
+     *
+     * @param bot бот для проведения операции
+     * @param n   направление
+     * @return X -  координата
+     */
+    int xFromVektorA(Bot bot, int n) {
         int xt = bot.x;
         if (n == 0 || n == 6 || n == 7) {
             xt = xt - 1;
             if (xt == -1) {
-                xt = World.simulation.width - 1;
+                xt = world.width - 1;
             }
         } else if (n == 2 || n == 3 || n == 4) {
             xt = xt + 1;
-            if (xt == World.simulation.width) {
+            if (xt == world.width) {
                 xt = 0;
             }
         }
@@ -441,7 +350,15 @@ public class Bot {
     // ---- Y координата по относительному направлению  ----------
     // ---  in - номер бота, направление              ------------
     // ---  out - Y -  координата                    -------------
-    public int yFromVektorR(Bot bot, int n) {
+
+    /**
+     * получение Y-координаты рядом
+     *
+     * @param bot бот для проведения операции
+     * @param n   направление
+     * @return Y координата по относительному направлению
+     */
+    int yFromVektorR(Bot bot, int n) {
         int yt = bot.y;
         n = n + bot.direction;
         if (n >= 8) {
@@ -460,7 +377,15 @@ public class Bot {
     // ---- Y координата по абсолютному направлению     ----------
     // ---  in - номер бота, направление              ------------
     // ---  out - Y -  координата                    -------------
-    public int yFromVektorA(Bot bot, int n) {
+
+    /**
+     * получение Y-координаты рядом
+     *
+     * @param bot бот для проведения операции
+     * @param n   направление
+     * @return Y координата по абсолютному направлению
+     */
+    int yFromVektorA(Bot bot, int n) {
         int yt = bot.y;
         if (n == 0 || n == 1 || n == 2) {
             yt = yt - 1;
@@ -474,12 +399,19 @@ public class Bot {
     //===========   окружен ли бот          ==========
     // ---  in - бот                 ------------
     //===== out  1-окружен  2-нет           ===
-    public int fullAroud(Bot bot) {
+
+    /**
+     * окружен ли бот
+     *
+     * @param bot бот для проведения операции
+     * @return 1-окружен  2-нет
+     */
+    int fullAroud(Bot bot) {
         for (int i = 0; i < 8; i++) {
             int xt = xFromVektorR(bot, i);
             int yt = yFromVektorR(bot, i);
-            if ((yt >= 0) && (yt < World.simulation.height)) {
-                if (World.simulation.matrix[xt][yt] == null) {
+            if ((yt >= 0) && (yt < world.height)) {
+                if (world.matrix[xt][yt] == null) {
                     return 2;
                 }
             }
@@ -495,12 +427,19 @@ public class Bot {
     //==== in  - бот                  ============
     //==== out - номер направление или       ============
     //====  или 8 , если свободных нет       ============
-    public int findEmptyDirection(Bot bot) {
+
+    /**
+     * ищет свободные ячейки вокруг бота кругу через низ    ( world )
+     *
+     * @param bot бот для проведения операции
+     * @return номер направление или 8 , если свободных нет
+     */
+    int findEmptyDirection(Bot bot) {
         for (int i = 0; i < 8; i++) {
             int xt = xFromVektorR(bot, i);
             int yt = yFromVektorR(bot, i);
-            if ((yt >= 0) && (yt < World.simulation.height)) {
-                if (World.simulation.matrix[xt][yt] == null) {
+            if ((yt >= 0) && (yt < world.height)) {
+                if (world.matrix[xt][yt] == null) {
                     return i;
                 }
             }
@@ -513,7 +452,14 @@ public class Bot {
     // -- получение параметра для команды   --------------
     //  in - bot
     // out - возвращает число из днк, следующее за выполняемой командой
-    public int botGetParam(Bot bot) {
+
+    /**
+     * получение параметра для команды
+     *
+     * @param bot бот для проведения операции
+     * @return возвращает число из днк, следующее за выполняемой командой
+     */
+    int botGetParam(Bot bot) {
         int paramadr = bot.adr + 1;
         if (paramadr >= MIND_SIZE) {
             paramadr = paramadr - MIND_SIZE;
@@ -524,7 +470,14 @@ public class Bot {
     //жжжжжжжжжжжжжжжжжжжхжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжж
     // -- увеличение адреса команды   --------------
     //  in - bot, насколько прибавить адрес --
-    public void botIncCommandAddress(Bot bot, int a) {
+
+    /**
+     * увеличение адреса команды
+     *
+     * @param bot бот для проведения операции
+     * @param a   насколько прибавить адрес
+     */
+    void botIncCommandAddress(Bot bot, int a) {
         int paramadr = bot.adr + a;
         if (paramadr >= MIND_SIZE) {
             paramadr = paramadr - MIND_SIZE;
@@ -536,7 +489,14 @@ public class Bot {
     //---- косвенное увеличение адреса команды   --------------
     //---- in - номер bot, смещение до команды,  --------------
     //---- которая станет смещением              --------------
-    public void botIndirectIncCmdAddress(Bot bot, int a) {
+
+    /**
+     * косвенное увеличение адреса команды
+     *
+     * @param bot бот для проведения операции
+     * @param a   смещение до команды, которая станет смещением
+     */
+    void botIndirectIncCmdAddress(Bot bot, int a) {
         int paramadr = bot.adr + a;
         if (paramadr >= MIND_SIZE) {
             paramadr = paramadr - MIND_SIZE;
@@ -549,12 +509,22 @@ public class Bot {
     //жжжжжжжжжжжжжжжжжжжхжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжж
     //=====  превращение бота в органику    ===========
     //=====  in - номер бота                ===========
-    public void bot2Organic(Bot bot) {
-        bot.alive = LV_ORGANIC_HOLD;       // отметим в массиве bots[], что бот органика
+
+    /**
+     * превращение бота в органику
+     *
+     * @param bot бот для проведения операции
+     */
+    void bot2Organic(Bot bot) {
+        bot.alive = LV_ORGANIC_SINK;       // отметим в массиве bots[], что бот органика
         Bot pbot = bot.mprev;
         Bot nbot = bot.mnext;
-        if (pbot != null){ pbot.mnext = null; } // удаление бота из многоклеточной цепочки
-        if (nbot != null){ nbot.mprev = null; }
+        if (pbot != null) {
+            pbot.mnext = null;
+        } // удаление бота из многоклеточной цепочки
+        if (nbot != null) {
+            nbot.mprev = null;
+        }
         bot.mprev = null;
         bot.mnext = null;
     }
@@ -563,7 +533,14 @@ public class Bot {
     //========   нахожусь ли я в многоклеточной цепочке  =====
     //========   in - номер бота                         =====
     //========   out- 0 - нет, 1 - есть MPREV, 2 - есть MNEXT, 3 есть MPREV и MNEXT
-    public int isMulti(Bot bot) {
+
+    /**
+     * нахожусь ли я в многоклеточной цепочке
+     *
+     * @param bot бот для проведения операции
+     * @return 0 - нет, 1 - есть MPREV, 2 - есть MNEXT, 3 есть MPREV и MNEXT
+     */
+    int isMulti(Bot bot) {
         int a = 0;
         if (bot.mprev != null) {
             a = 1;
@@ -578,9 +555,17 @@ public class Bot {
     //===== перемещает бота в нужную точку  ==============
     //===== без проверок                    ==============
     //===== in - номер бота и новые координаты ===========
-    public void moveBot(Bot bot, int xt, int yt) {
-        World.simulation.matrix[xt][yt] = bot;
-        World.simulation.matrix[bot.x][bot.y] = null;
+
+    /**
+     * перемещает бота в нужную точку без проверок
+     *
+     * @param bot бот для проведения операции
+     * @param xt  новые координаты x
+     * @param yt  новые координаты y
+     */
+    void moveBot(Bot bot, int xt, int yt) {
+        world.matrix[xt][yt] = bot;
+        world.matrix[bot.x][bot.y] = null;
         bot.x = xt;
         bot.y = yt;
     }
@@ -588,14 +573,24 @@ public class Bot {
     //жжжжжжжжжжжжжжжжжжжхжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжж
     //=====   удаление бота        =============
     //=====  in - бот       =============
+
+    /**
+     * удаление бота
+     *
+     * @param bot бот для проведения операции
+     */
     public void deleteBot(Bot bot) {
         Bot pbot = bot.mprev;
         Bot nbot = bot.mnext;
-        if (pbot != null){ pbot.mnext = null; } // удаление бота из многоклеточной цепочки
-        if (nbot != null){ nbot.mprev = null; }
+        if (pbot != null) {
+            pbot.mnext = null;
+        } // удаление бота из многоклеточной цепочки
+        if (nbot != null) {
+            nbot.mprev = null;
+        }
         bot.mprev = null;
         bot.mnext = null;
-        World.simulation.matrix[bot.x][bot.y] = null; // удаление бота с карты
+        world.matrix[bot.x][bot.y] = null; // удаление бота с карты
     }
 
 
@@ -605,6 +600,14 @@ public class Bot {
     // ...  фотосинтез, этой командой забит геном первого бота     ...............
     // ...  бот получает энергию солнца в зависимости от глубины   ...............
     // ...  и количества минералов, накопленных ботом              ...............
+
+    /**
+     * фотосинтез, этой командой забит геном первого бота
+     * бот получает энергию солнца в зависимости от глубины
+     * и количества минералов, накопленных ботом
+     *
+     * @param bot бот для проведения операции
+     */
     public void botEatSun(Bot bot) {
         int t;
         if (bot.mineral < 100) {
@@ -621,8 +624,9 @@ public class Bot {
         if (bot.mnext != null) {
             a = a + 4;
         }
-        int hlt = a + 1 * (11 - (15 * bot.y / World.simulation.height) + t); // формула вычисления энергии ============================= SEZON!!!!!!!!!!
-//        System.out.println(World.simulation.generation + ": " + bot.health + " + " + hlt);
+        // формула вычисления энергии ============================= SEZON!!!!!!!!!!
+        int hlt = a + (11 - (15 * bot.y / world.height) + t);
+//        System.out.println(world.generation + ": " + bot.health + " + " + hlt);
         if (hlt > 0) {
             bot.health = bot.health + hlt;   // прибавляем полученную энергия к энергии бота
             goGreen(bot, hlt);                                     // бот от этого зеленеет
@@ -631,6 +635,12 @@ public class Bot {
 
 
     // ...  преобразование минералов в энергию  ...............
+
+    /**
+     * преобразование минералов в энергию
+     *
+     * @param bot бот для проведения операции
+     */
     public void botMineral2Energy(Bot bot) {
         if (bot.mineral > 100) {   // максимальное количество минералов, которые можно преобразовать в энергию = 100
             bot.mineral = bot.mineral - 100;
@@ -644,8 +654,16 @@ public class Bot {
     }
 
     //===========================  перемещение бота   ========================================
+
+    /**
+     * перемещение бота
+     *
+     * @param bot       ссылка на бота,
+     * @param direction направлелие
+     * @param ra        флажок(относительное или абсолютное направление)
+     * @return на выходе   2-пусто  3-стена  4-органика 5-бот 6-родня
+     */
     public int botMove(Bot bot, int direction, int ra) { // ссылка на бота, направлелие и флажок(относительное или абсолютное направление)
-        // на выходе   2-пусто  3-стена  4-органика 5-бот 6-родня
         int xt;
         int yt;
         if (ra == 0) {          // вычисляем координату клетки, куда перемещается бот (относительное направление)
@@ -655,25 +673,34 @@ public class Bot {
             xt = xFromVektorA(bot, direction);
             yt = yFromVektorA(bot, direction);
         }
-        if ((yt < 0) || (yt >= World.simulation.height)) {  // если там ... стена
+        if ((yt < 0) || (yt >= world.height)) {  // если там ... стена
             return 3;                       // то возвращаем 3
         }
-        if (World.simulation.matrix[xt][yt] == null) {  // если клетка была пустая,
+        if (world.matrix[xt][yt] == null) {  // если клетка была пустая,
             moveBot(bot, xt, yt);    // то перемещаем бота
             return 2;                       // и функция возвращает 2
         }
         // осталось 2 варианта: ограника или бот
-        if (World.simulation.matrix[xt][yt].alive <= LV_ORGANIC_SINK) { // если на клетке находится органика
+        if (world.matrix[xt][yt].getAlive() <= LV_ORGANIC_SINK) { // если на клетке находится органика
             return 4;                       // то возвращаем 4
         }
-        if (isRelative(bot, World.simulation.matrix[xt][yt]) == 1) {  // если на клетке родня
+        if (isRelative(bot, (Bot) world.matrix[xt][yt]) == 1) {  // если на клетке родня
             return 6;                      // то возвращаем 6
         }
         return 5;                         // остался только один вариант - на клетке какой-то бот возвращаем 5
     }
 
     //============================    скушать другого бота или органику  ==========================================
-    public int botEat(Bot bot, int direction, int ra) { // на входе ссылка на бота, направлелие и флажок(относительное или абсолютное направление)
+
+    /**
+     * скушать другого бота или органику
+     *
+     * @param bot       входе ссылка на бота
+     * @param direction направлелие
+     * @param ra        флажок(относительное или абсолютное направление)
+     * @return пусто - 2  стена - 3  органик - 4  бот - 5
+     */
+    int botEat(Bot bot, int direction, int ra) { // на входе ссылка на бота, направлелие и флажок(относительное или абсолютное направление)
         // на выходе пусто - 2  стена - 3  органик - 4  бот - 5
         bot.health = bot.health - 4; // бот теряет на этом 4 энергии в независимости от результата
         int xt;
@@ -685,28 +712,28 @@ public class Bot {
             xt = xFromVektorA(bot, direction);
             yt = yFromVektorA(bot, direction);
         }
-        if ((yt < 0) || (yt >= World.simulation.height)) {  // если там стена возвращаем 3
+        if ((yt < 0) || (yt >= world.height)) {  // если там стена возвращаем 3
             return 3;
         }
-        if (World.simulation.matrix[xt][yt] == null) {  // если клетка пустая возвращаем 2
+        if (world.matrix[xt][yt] == null) {  // если клетка пустая возвращаем 2
             return 2;
         }
         // осталось 2 варианта: ограника или бот
-        else if (World.simulation.matrix[xt][yt].alive <= LV_ORGANIC_SINK) {   // если там оказалась органика
-            deleteBot(World.simulation.matrix[xt][yt]);                           // то удаляем её из списков
+        else if (world.matrix[xt][yt].getAlive() <= LV_ORGANIC_SINK) {   // если там оказалась органика
+            deleteBot((Bot) world.matrix[xt][yt]);                           // то удаляем её из списков
             bot.health = bot.health + 100; //здоровье увеличилось на 100
             goRed(this, 100);                                     // бот покраснел
             return 4;                                               // возвращаем 4
         }
         //--------- дошли до сюда, значит впереди живой бот -------------------
         int min0 = bot.mineral;  // определим количество минералов у бота
-        int min1 = World.simulation.matrix[xt][yt].mineral;  // определим количество минералов у потенциального обеда
-        int hl = World.simulation.matrix[xt][yt].health;  // определим энергию у потенциального обеда
+        int min1 = ((Bot) world.matrix[xt][yt]).mineral;  // определим количество минералов у потенциального обеда
+        int hl = ((Bot) world.matrix[xt][yt]).health;  // определим энергию у потенциального обеда
         // если у бота минералов больше
         if (min0 >= min1) {
             bot.mineral = min0 - min1; // количество минералов у бота уменьшается на количество минералов у жертвы
             // типа, стесал свои зубы о панцирь жертвы
-            deleteBot(World.simulation.matrix[xt][yt]);          // удаляем жертву из списков
+            deleteBot((Bot) world.matrix[xt][yt]);          // удаляем жертву из списков
             int cl = 100 + (hl / 2);           // количество энергии у бота прибавляется на 100+(половина от энергии жертвы)
             bot.health = bot.health + cl;
             goRed(this, cl);                    // бот краснеет
@@ -715,26 +742,37 @@ public class Bot {
         //если у жертвы минералов больше ----------------------
         bot.mineral = 0; // то бот израсходовал все свои минералы на преодоление защиты
         min1 = min1 - min0;       // у жертвы количество минералов тоже уменьшилось
-        World.simulation.matrix[xt][yt].mineral = min1 - min0;       // перезаписали минералы жертве =========================ЗАПЛАТКА!!!!!!!!!!!!
+        ((Bot) world.matrix[xt][yt]).mineral = min1 - min0;       // перезаписали минералы жертве =========================ЗАПЛАТКА!!!!!!!!!!!!
         //------ если здоровья в 2 раза больше, чем минералов у жертвы  ------
         //------ то здоровьем проламываем минералы ---------------------------
         if (bot.health >= 2 * min1) {
-            deleteBot(World.simulation.matrix[xt][yt]);         // удаляем жертву из списков
+            deleteBot((Bot) world.matrix[xt][yt]);         // удаляем жертву из списков
             int cl = 100 + (hl / 2) - 2 * min1; // вычисляем, сколько энергии смог получить бот
             bot.health = bot.health + cl;
-            if (cl < 0) { cl = 0; } //========================================================================================ЗАПЛАТКА!!!!!!!!!!! - энергия не должна быть отрицательной
+            if (cl < 0) {
+                cl = 0;
+            } //========================================================================================ЗАПЛАТКА!!!!!!!!!!! - энергия не должна быть отрицательной
 
             goRed(this, cl);                   // бот краснеет
             return 5;                             // возвращаем 5
         }
         //--- если здоровья меньше, чем (минералов у жертвы)*2, то бот погибает от жертвы
-        World.simulation.matrix[xt][yt].mineral = min1 - (bot.health / 2);  // у жертвы минералы истраченны
+        ((Bot) world.matrix[xt][yt]).mineral = min1 - (bot.health / 2);  // у жертвы минералы истраченны
         bot.health = 0;  // здоровье уходит в ноль
         return 5;                       // возвращаем 5
     }
 
     //.======================  посмотреть ==================================================
-    public int botSeeBots(Bot bot, int direction, int ra) { // на входе ссылка на бота, направлелие и флажок(относительное или абсолютное направление)
+
+    /**
+     * посмотреть
+     *
+     * @param bot       ссылка на бота
+     * @param direction направлелие
+     * @param ra        флажок(относительное или абсолютное направление)
+     * @return пусто - 2  стена - 3  органик - 4  бот - 5  родня - 6
+     */
+    int botSeeBots(Bot bot, int direction, int ra) { // на входе ссылка на бота, направлелие и флажок(относительное или абсолютное направление)
         // на выходе  пусто - 2  стена - 3  органик - 4  бот - 5  родня - 6
         int xt;
         int yt;
@@ -745,13 +783,13 @@ public class Bot {
             xt = xFromVektorA(bot, direction);
             yt = yFromVektorA(bot, direction);
         }
-        if (yt < 0 || yt >= World.simulation.height) {  // если там стена возвращаем 3
+        if (yt < 0 || yt >= world.height) {  // если там стена возвращаем 3
             return 3;
-        } else if (World.simulation.matrix[xt][yt] == null) {  // если клетка пустая возвращаем 2
+        } else if (world.matrix[xt][yt] == null) {  // если клетка пустая возвращаем 2
             return 2;
-        } else if (World.simulation.matrix[xt][yt].alive <= LV_ORGANIC_SINK) { // если органика возвращаем 4
+        } else if (world.matrix[xt][yt].getAlive() <= LV_ORGANIC_SINK) { // если органика возвращаем 4
             return 4;
-        } else if (isRelative(bot, World.simulation.matrix[xt][yt]) == 1) {  // если родня, то возвращаем 6
+        } else if (isRelative(bot, (Bot) world.matrix[xt][yt]) == 1) {  // если родня, то возвращаем 6
             return 6;
         } else { // если какой-то бот, то возвращаем 5
             return 5;
@@ -760,16 +798,22 @@ public class Bot {
 
 
     //======== атака на геном соседа, меняем случайны ген случайным образом  ===============
-    public void botGenAttack(Bot bot) {   // вычисляем кто у нас перед ботом (используется только относительное направление вперед)
+
+    /**
+     * атака на геном соседа, меняем случайны ген случайным образом
+     *
+     * @param bot бот для проведения операции
+     */
+    void botGenAttack(Bot bot) {   // вычисляем кто у нас перед ботом (используется только относительное направление вперед)
         int xt = xFromVektorR(bot, 0);
         int yt = yFromVektorR(bot, 0);
-        if ((yt >= 0) && (yt < World.simulation.height) && (World.simulation.matrix[xt][yt] != null)) {
-            if (World.simulation.matrix[xt][yt].alive == LV_ALIVE) { // если там живой бот
+        if ((yt >= 0) && (yt < world.height) && (world.matrix[xt][yt] != null)) {
+            if (world.matrix[xt][yt].getAlive() == LV_ALIVE) { // если там живой бот
                 bot.health = bot.health - 10; // то атакуюий бот теряет на атаку 10 энергии
                 if (bot.health > 0) {                    // если он при этом не умер
-                    int ma = (int) (Math.random() * 64);  // 0..63 // то у жертвы случайным образом меняется один ген
-                    int mc = (int) (Math.random() * 64);  // 0..63
-                    World.simulation.matrix[xt][yt].mind[ma] = mc;
+                    byte ma = (byte) (Math.random() * MIND_SIZE);  // 0..63 // то у жертвы случайным образом меняется один ген
+                    byte mc = (byte) (Math.random() * MIND_SIZE);  // 0..63
+                    ((Bot) world.matrix[xt][yt]).mind[ma] = mc;
                 }
             }
         }
@@ -779,8 +823,18 @@ public class Bot {
     //==========               поделится          ====================================================
     // =========  если у бота больше энергии или минералов, чем у соседа в заданном направлении  =====
     //==========  то бот делится излишками                                                       =====
-    public int botCare(Bot bot, int direction, int ra) { // на входе ссылка на бота, направлелие и флажок(относительное или абсолютное направление)
-        // на выходе стена - 2 пусто - 3 органика - 4 удачно - 5
+
+    /**
+     * поделится
+     * если у бота больше энергии или минералов, чем у соседа в заданном направлении
+     * то бот делится излишками
+     *
+     * @param bot       ссылка на бота
+     * @param direction направлелие
+     * @param ra        флажок(относительное или абсолютное направление)
+     * @return на выходе стена - 2 пусто - 3 органика - 4 удачно - 5
+     */
+    int botCare(Bot bot, int direction, int ra) { // на входе ссылка на бота, направлелие и флажок(относительное или абсолютное направление)
         int xt;
         int yt;
         if (ra == 0) {  // определяем координаты для относительного направления
@@ -790,34 +844,43 @@ public class Bot {
             xt = xFromVektorA(bot, direction);
             yt = yFromVektorA(bot, direction);
         }
-        if (yt < 0 || yt >= World.simulation.height) {  // если там стена возвращаем 3
+        if (yt < 0 || yt >= world.height) {  // если там стена возвращаем 3
             return 3;
-        } else if (World.simulation.matrix[xt][yt] == null) {  // если клетка пустая возвращаем 2
+        } else if (world.matrix[xt][yt] == null) {  // если клетка пустая возвращаем 2
             return 2;
-        } else if (World.simulation.matrix[xt][yt].alive <= LV_ORGANIC_SINK) { // если органика возвращаем 4
+        } else if (world.matrix[xt][yt].getAlive() <= LV_ORGANIC_SINK) { // если органика возвращаем 4
             return 4;
         }
         //------- если мы здесь, то в данном направлении живой ----------
         int hlt0 = bot.health;         // определим количество энергии и минералов
-        int hlt1 = World.simulation.matrix[xt][yt].health;  // у бота и его соседа
+        int hlt1 = ((Bot) world.matrix[xt][yt]).health;  // у бота и его соседа
         int min0 = bot.mineral;
-        int min1 = World.simulation.matrix[xt][yt].mineral;
+        int min1 = ((Bot) world.matrix[xt][yt]).mineral;
         if (hlt0 > hlt1) {              // если у бота больше энергии, чем у соседа
             int hlt = (hlt0 - hlt1) / 2;   // то распределяем энергию поровну
             bot.health = bot.health - hlt;
-            World.simulation.matrix[xt][yt].health = World.simulation.matrix[xt][yt].health + hlt;
+            ((Bot) world.matrix[xt][yt]).health = ((Bot) world.matrix[xt][yt]).health + hlt;
         }
         if (min0 > min1) {              // если у бота больше минералов, чем у соседа
             int min = (min0 - min1) / 2;   // то распределяем их поровну
             bot.mineral = bot.mineral - min;
-            World.simulation.matrix[xt][yt].mineral = World.simulation.matrix[xt][yt].mineral + min;
+            ((Bot) world.matrix[xt][yt]).mineral = ((Bot) world.matrix[xt][yt]).mineral + min;
         }
         return 5;
     }
 
 
     //=================  отдать безвозместно, то есть даром    ==========
-    public int botGive(Bot bot, int direction, int ra) // на входе ссылка на бота, направлелие и флажок(относительное или абсолютное направление)
+
+    /**
+     * отдать безвозместно, то есть даром
+     *
+     * @param bot       ссылка на бота
+     * @param direction направлелие
+     * @param ra        флажок(относительное или абсолютное направление)
+     * @return стена - 2 пусто - 3 органика - 4 удачно - 5
+     */
+    int botGive(Bot bot, int direction, int ra) // на входе ссылка на бота, направлелие и флажок(относительное или абсолютное направление)
     {                         // на выходе стена - 2 пусто - 3 органика - 4 удачно - 5
         int xt;
         int yt;
@@ -828,26 +891,26 @@ public class Bot {
             xt = xFromVektorA(bot, direction);
             yt = yFromVektorA(bot, direction);
         }
-        if (yt < 0 || yt >= World.simulation.height) {  // если там стена возвращаем 3
+        if (yt < 0 || yt >= world.height) {  // если там стена возвращаем 3
             return 3;
-        } else if (World.simulation.matrix[xt][yt] == null) {  // если клетка пустая возвращаем 2
+        } else if (world.matrix[xt][yt] == null) {  // если клетка пустая возвращаем 2
             return 2;
-        } else if (World.simulation.matrix[xt][yt].alive <= LV_ORGANIC_SINK) { // если органика возвращаем 4
+        } else if (world.matrix[xt][yt].getAlive() <= LV_ORGANIC_SINK) { // если органика возвращаем 4
             return 4;
         }
         //------- если мы здесь, то в данном направлении живой ----------
         int hlt0 = bot.health;  // бот отдает четверть своей энергии
         int hlt = hlt0 / 4;
         bot.health = hlt0 - hlt;
-        World.simulation.matrix[xt][yt].health = World.simulation.matrix[xt][yt].health + hlt;
+        ((Bot) world.matrix[xt][yt]).health = ((Bot) world.matrix[xt][yt]).health + hlt;
 
         int min0 = bot.mineral;  // бот отдает четверть своих минералов
         if (min0 > 3) {                 // только если их у него не меньше 4
             int min = min0 / 4;
             bot.mineral = min0 - min;
-            World.simulation.matrix[xt][yt].mineral = World.simulation.matrix[xt][yt].mineral + min;
-            if (World.simulation.matrix[xt][yt].mineral > 999) {
-                World.simulation.matrix[xt][yt].mineral = 999;
+            ((Bot) world.matrix[xt][yt]).mineral = ((Bot) world.matrix[xt][yt]).mineral + min;
+            if (((Bot) world.matrix[xt][yt]).mineral > 999) {
+                ((Bot) world.matrix[xt][yt]).mineral = 999;
             }
         }
         return 5;
@@ -856,11 +919,13 @@ public class Bot {
 
     //....................................................................
     // рождение нового бота делением
-    public void botDouble(Bot bot) {
+
+    /**
+     * рождение нового бота делением
+     */
+    private void botDouble(Bot bot) {
         bot.health = bot.health - 150;      // бот затрачивает 150 единиц энергии на создание копии
-        if (bot.health <= 0) {
-            return;
-        }   // если у него было меньше 150, то пора помирать
+        if (bot.health <= 0) return; // если у него было меньше 150, то пора помирать
 
         int n = findEmptyDirection(bot);    // проверим, окружен ли бот
         if (n == 8) {                      // если бот окружен, то он в муках погибает
@@ -868,17 +933,17 @@ public class Bot {
             return;
         }
 
-        Bot newbot = new Bot();
+        Bot newbot = new Bot(this.world);
 
         int xt = xFromVektorR(bot, n);   // координаты X и Y
         int yt = yFromVektorR(bot, n);
 
-        for (int i = 0; i < MIND_SIZE; i++) {  // копируем геном в нового бота
-            newbot.mind[i] = bot.mind[i];
-        }
+        //todo Warning: Copying to the same array with intersecting ranges
+        System.arraycopy(bot.mind, 0, newbot.mind, 0, MIND_SIZE);
+
         if (Math.random() < 0.25) {     // в одном случае из четырех случайным образом меняем один случайный байт в геноме
-            int ma = (int) (Math.random() * 64);  // 0..63
-            int mc = (int) (Math.random() * 64);  // 0..63
+            byte ma = (byte) (Math.random() * MIND_SIZE);  // 0..63
+            byte mc = (byte) (Math.random() * MIND_SIZE);  // 0..63
             newbot.mind[ma] = mc;
         }
 
@@ -891,7 +956,7 @@ public class Bot {
         newbot.mineral = bot.mineral / 2; // забирается половина минералов у предка
         bot.mineral = bot.mineral / 2;
 
-        newbot.alive = 3;             // отмечаем, что бот живой
+        newbot.alive = LV_ALIVE;             // отмечаем, что бот живой
 
         newbot.c_red = bot.c_red;   // цвет такой же, как у предка
         newbot.c_green = bot.c_green;   // цвет такой же, как у предка
@@ -899,39 +964,39 @@ public class Bot {
 
         newbot.direction = (int) (Math.random() * 8);   // направление, куда повернут новорожденный, генерируется случайно
 
-        World.simulation.matrix[xt][yt] = newbot;    // отмечаем нового бота в массиве matrix
+        world.matrix[xt][yt] = newbot;    // отмечаем нового бота в массиве matrix
     }
 
     // ======       рождение новой клетки многоклеточного    ==========================================
+
+    /**
+     * рождение новой клетки многоклеточного
+     */
     private void botMulti(Bot bot) {
         Bot pbot = bot.mprev;    // ссылки на предыдущего и следущего в многоклеточной цепочке
         Bot nbot = bot.mnext;
         // если обе ссылки больше 0, то бот уже внутри цепочки
-        if ((pbot != null) && (nbot != null)) {
-            return;
-        } // поэтому выходим без создания нового бота
+        if ((pbot != null) && (nbot != null)) return; // поэтому выходим без создания нового бота
 
         bot.health = bot.health - 150; // бот затрачивает 150 единиц энергии на создание копии
-        if (bot.health <= 0) {
-            return;
-        }// если у него было меньше 150, то пора помирать
+        if (bot.health <= 0) return; // если у него было меньше 150, то пора помирать
         int n = findEmptyDirection(bot); // проверим, окружен ли бот
 
         if (n == 8) {  // если бот окружен, то он в муках погибает
             bot.health = 0;
             return;
         }
-        Bot newbot = new Bot();
+        Bot newbot = new Bot(this.world);
 
         int xt = xFromVektorR(bot, n);   // координаты X и Y
         int yt = yFromVektorR(bot, n);
 
-        for (int i = 0; i < MIND_SIZE; i++) {  // копируем геном в нового бота
-            newbot.mind[i] = newbot.mind[i];
-        }
+        //todo Warning: Copying to the same array with intersecting ranges
+        System.arraycopy(bot.mind, 0, newbot.mind, 0, MIND_SIZE);    // копируем геном в нового бота
+
         if (Math.random() < 0.25) {     // в одном случае из четырех случайным образом меняем один случайный байт в геноме
-            int ma = (int) (Math.random() * 64);  // 0..63
-            int mc = (int) (Math.random() * 64);  // 0..63
+            byte ma = (byte) (Math.random() * MIND_SIZE);  // 0..63
+            byte mc = (byte) (Math.random() * MIND_SIZE);  // 0..63
             newbot.mind[ma] = mc;
         }
 
@@ -944,7 +1009,7 @@ public class Bot {
         newbot.mineral = bot.mineral / 2; // забирается половина минералов у предка
         bot.mineral = bot.mineral / 2;
 
-        newbot.alive = 3;             // отмечаем, что бот живой
+        newbot.alive = LV_ALIVE;             // отмечаем, что бот живой
 
         newbot.c_red = bot.c_red;   // цвет такой же, как у предка
         newbot.c_green = bot.c_green;   // цвет такой же, как у предка
@@ -952,7 +1017,7 @@ public class Bot {
 
         newbot.direction = (int) (Math.random() * 8);   // направление, куда повернут новорожденный, генерируется случайно
 
-        World.simulation.matrix[xt][yt] = newbot;    // отмечаем нового бота в массиве matrix
+        world.matrix[xt][yt] = newbot;    // отмечаем нового бота в массиве matrix
 
         if (nbot == null) {                      // если у бота-предка ссылка на следующего бота в многоклеточной цепочке пуста
             bot.mnext = newbot; // то вставляем туда новорожденного бота
@@ -970,7 +1035,14 @@ public class Bot {
     //========   копится ли энергия            =====
     //========   in - номер бота                =====
     //========   out- 1 - да, 2 - нет           =====
-    public int isHealthGrow(Bot bot) {
+
+    /**
+     * копится ли энергия
+     *
+     * @param bot бот для проведения операции
+     * @return 1 - да, 2 - нет
+     */
+    int isHealthGrow(Bot bot) {
         int t;
         if (bot.mineral < 100) {
             t = 0;
@@ -981,7 +1053,7 @@ public class Bot {
                 t = 2;
             }
         }
-        int hlt = 10 - (15 * bot.y / World.simulation.height) + t; // ====================================================== SEZON!!!!!!!!!!!!!!!!!!
+        int hlt = 10 - (15 * bot.y / world.height) + t; // ====================================================== SEZON!!!!!!!!!!!!!!!!!!
         if (hlt >= 3) {
             return 1;
         } else {
@@ -993,7 +1065,15 @@ public class Bot {
     //========   родственники ли боты?              =====
     //========   in - номер 1 бота , номер 2 бота   =====
     //========   out- 0 - нет, 1 - да               =====
-    public int isRelative(Bot bot0, Bot bot1) {
+
+    /**
+     * родственники ли боты?
+     *
+     * @param bot0 бот для проведения операции
+     * @param bot1 бот для проведения операции
+     * @return 0 - нет, 1 - да
+     */
+    int isRelative(Bot bot0, Bot bot1) {
         if (bot1.alive != LV_ALIVE) {
             return 0;
         }
@@ -1012,7 +1092,14 @@ public class Bot {
     //жжжжжжжжжжжжжжжжжжжхжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжж
     //=== делаем бота более зеленым на экране         ======
     //=== in - номер бота, на сколько озеленить       ======
-    public void goGreen(Bot bot, int num) {  // добавляем зелени
+
+    /**
+     * делаем бота более зеленым на экране
+     *
+     * @param bot бот для проведения операции
+     * @param num номер бота, на сколько озеленить
+     */
+    void goGreen(Bot bot, int num) {  // добавляем зелени
         bot.c_green = bot.c_green + num;
         if (bot.c_green + num > 255) {
             bot.c_green = 255;
@@ -1021,11 +1108,11 @@ public class Bot {
         // убавляем красноту
         bot.c_red = bot.c_red - nm;
         if (bot.c_red < 0) {
-            bot.c_blue = bot.c_blue +  bot.c_red;
+            bot.c_blue = bot.c_blue + bot.c_red;
         }
         // убавляем синеву
         bot.c_blue = bot.c_blue - nm;
-        if (bot.c_blue < 0 ) {
+        if (bot.c_blue < 0) {
             bot.c_red = bot.c_red + bot.c_blue;
         }
         if (bot.c_red < 0) {
@@ -1039,7 +1126,14 @@ public class Bot {
     //жжжжжжжжжжжжжжжжжжжхжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжж
     //=== делаем бота более синим на экране         ======
     //=== in - номер бота, на сколько осинить       ======
-    public void goBlue(Bot bot, int num) {  // добавляем синевы
+
+    /**
+     * делаем бота более синим на экране
+     *
+     * @param bot бот для проведения операции
+     * @param num номер бота, на сколько осинить
+     */
+    void goBlue(Bot bot, int num) {  // добавляем синевы
         bot.c_blue = bot.c_blue + num;
         if (bot.c_blue > 255) {
             bot.c_blue = 255;
@@ -1047,13 +1141,13 @@ public class Bot {
         int nm = num / 2;
         // убавляем зелень
         bot.c_green = bot.c_green - nm;
-        if (bot.c_green < 0 ) {
+        if (bot.c_green < 0) {
             bot.c_red = bot.c_red + bot.c_green;
         }
         // убавляем красноту
         bot.c_red = bot.c_red - nm;
         if (bot.c_red < 0) {
-            bot.c_green = bot.c_green +  bot.c_red;
+            bot.c_green = bot.c_green + bot.c_red;
         }
         if (bot.c_red < 0) {
             bot.c_red = 0;
@@ -1063,10 +1157,13 @@ public class Bot {
         }
     }
 
-    //жжжжжжжжжжжжжжжжжжжхжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжжж
-    //=== делаем бота более красным на экране         ======
-    //=== in - номер бота, на сколько окраснить       ======
-    public void goRed(Bot bot, int num) {  // добавляем красноты
+    /**
+     * делаем бота более красным на экране
+     *
+     * @param bot бот для проведения операции
+     * @param num номер бота, на сколько окраснить
+     */
+    void goRed(Bot bot, int num) {  // добавляем красноты
         bot.c_red = bot.c_red + num;
         if (bot.c_red > 255) {
             bot.c_red = 255;
@@ -1074,13 +1171,13 @@ public class Bot {
         int nm = num / 2;
         // убавляем зелень
         bot.c_green = bot.c_green - nm;
-        if (bot.c_green < 0 ) {
+        if (bot.c_green < 0) {
             bot.c_blue = bot.c_blue + bot.c_green;
         }
         // убавляем синеву
         bot.c_blue = bot.c_blue - nm;
         if (bot.c_blue < 0) {
-            bot.c_green = bot.c_green +  bot.c_blue;
+            bot.c_green = bot.c_green + bot.c_blue;
         }
         if (bot.c_blue < 0) {
             bot.c_blue = 0;
@@ -1091,6 +1188,112 @@ public class Bot {
     }
 
 
+    @Override
+    public int getParam() {
+        return this.botGetParam(this);
+    }
 
+    @Override
+    public int getDirection() {
+        return this.direction;
+    }
 
+    @Override
+    public void setDirection(int newdrct) {
+        if (newdrct >= 8)
+            newdrct = newdrct - 8; // результат должен быть в пределах от 0 до 8
+        this.direction = newdrct;
+    }
+
+    @Override
+    public void incCommandAddress(int i) {
+        botIncCommandAddress(this, i);
+    }
+
+    @Override
+    public void eatSun() {
+        botEatSun(this);
+    }
+
+    @Override
+    public void indirectIncCmdAddress(int a) {
+        botIndirectIncCmdAddress(this, a);
+    }
+
+    @Override
+    public int isMulti() {
+        return isMulti(this);
+    }
+
+    @Override
+    public int move(int drct, int i) {
+        return this.botMove(this, drct, i);
+    }
+
+    @Override
+    public int eat(int drct, int i) {
+        return botEat(this, drct, i);
+    }
+
+    @Override
+    public int seeBots(int drct, int i) {
+        return botSeeBots(this, drct, i);
+    }
+
+    @Override
+    public int care(int drct, int i) {
+        return botCare(this, drct, i);
+    }
+
+    @Override
+    public int give(int drct, int i) {
+        return botGive(this, drct, i);
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getMineral() {
+        return mineral;
+    }
+
+    @Override
+    public void Double() {
+        this.botDouble(this);
+    }
+
+    @Override
+    public void multi() {
+        this.botMulti(this);
+    }
+
+    @Override
+    public int fullAroud() {
+        return fullAroud(this);
+    }
+
+    @Override
+    public int isHealthGrow() {
+        return isHealthGrow(this);
+    }
+
+    @Override
+    public void mineral2Energy() {
+        botMineral2Energy(this);
+    }
+
+    @Override
+    public void setMind(byte ma, byte mc) {
+        this.mind[ma] = mc;
+    }
+
+    @Override
+    public void genAttack() {
+        this.botGenAttack(this);
+    }
 }

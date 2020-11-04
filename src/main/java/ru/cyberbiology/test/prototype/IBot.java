@@ -69,4 +69,7 @@ public interface IBot
 	public void genAttack();
 	public IWorld getWorld();
 
+    void step();
+    int getAlive();
+	void relink(IBot[][] matrix);
 }

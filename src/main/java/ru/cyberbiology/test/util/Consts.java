@@ -18,6 +18,7 @@ public class Consts {
     public static final String EXIT_TEXT = "Выйти";
     public static final String VIEW_TEXT = "Вид";
     public static final String OPEN_TEXT = "Открыть";
+    public static final String DEMO_TEXT = "Демо";
 
     public static final String MAIN_TITLE = "CyberBiologyTest";
     public static final String APP_VERSION = "1.0.0";

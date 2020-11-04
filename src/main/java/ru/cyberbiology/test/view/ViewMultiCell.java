@@ -7,6 +7,7 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 import ru.cyberbiology.test.World;
+import ru.cyberbiology.test.bot.Bot;
 import ru.cyberbiology.test.prototype.view.IView;
 
 import static ru.cyberbiology.test.util.Consts.*;
@@ -41,11 +42,11 @@ public class ViewMultiCell implements IView
                 if (world.matrix[x][y] == null) {
                     g.setColor(Color.WHITE);
                     g.fillRect(x * BOTW,y * BOTH, BOTW, BOTH);
-                } else if ((world.matrix[x][y].alive == 1) || (world.matrix[x][y].alive == 2)) {
+                } else if ((world.matrix[x][y].getAlive() == 1) || (world.matrix[x][y].getAlive() == 2)) {
                     g.setColor(new Color(200, 200, 200));
                     g.fillRect(x * BOTW, y * BOTH, BOTW, BOTH);
                     world.organic = world.organic + 1;
-                } else if (world.matrix[x][y].alive == 3) {
+                } else if (world.matrix[x][y].getAlive() == 3) {
                 	g.setColor(Color.BLACK);
                     g.drawRect(x * BOTW, y * BOTH, BOTW, BOTH);
                 	switch(world.matrix[x][y].isMulti())
@@ -64,11 +65,13 @@ public class ViewMultiCell implements IView
     	                    g.fillRect(x * BOTW + 1, y * BOTH + 1, BOTW-1, BOTH-1);
             				break;
             			default:
-    	                    int green = (int) (world.matrix[x][y].c_green - ((world.matrix[x][y].c_green * world.matrix[x][y].health) / 2000));
+    	                    int green = (int) (((Bot) world.matrix[x][y]).c_green
+									- ((((Bot) world.matrix[x][y]).c_green * ((Bot) world.matrix[x][y]).health) / 2000));
     	                    if (green < 0) green = 0;
     	                    if (green > 255) green = 255;
-    	                    int blue = (int) (world.matrix[x][y].c_blue * 0.8 - ((world.matrix[x][y].c_blue * world.matrix[x][y].mineral) / 2000));
-    	                    g.setColor(new Color(world.matrix[x][y].c_red, green, blue));
+    	                    int blue = (int) (((Bot) world.matrix[x][y]).c_blue * 0.8
+									- ((((Bot) world.matrix[x][y]).c_blue * ((Bot) world.matrix[x][y]).mineral) / 2000));
+    	                    g.setColor(new Color(((Bot) world.matrix[x][y]).c_red, green, blue));
     	                    g.fillRect(x * BOTW + 1, y * BOTH + 1, BOTW-1, BOTH-1);
             					break;
             		}

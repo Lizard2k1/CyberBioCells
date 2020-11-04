@@ -13,7 +13,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import ru.cyberbiology.test.Bot;
+import ru.cyberbiology.test.bot.Bot;
 import ru.cyberbiology.test.prototype.IBot;
 import ru.cyberbiology.test.prototype.IWorld;
 import ru.cyberbiology.test.prototype.record.AbstractRecordManager;
@@ -166,7 +166,7 @@ public class RecordManager extends AbstractRecordManager
 			out.writeInt(height);
 			
 			Frame frame = (Frame) this.newFrame();
-			Bot[][] w	= this.getWorld().getWorldArray();
+			IBot[][] w	= this.getWorld().getWorldArray();
 	        for (int y = 0; y < height; y++)
 	        {
 	            for (int x = 0; x < width; x++)
@@ -218,7 +218,7 @@ public class RecordManager extends AbstractRecordManager
 	class Item
 	{
 		//int[] data;
-		//Bot bot;
+		//ru.cyberbiology.Bot bot;
 		
 		
 		byte bot_adr;

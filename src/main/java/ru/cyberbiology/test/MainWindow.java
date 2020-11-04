@@ -2,6 +2,7 @@ package ru.cyberbiology.test;
 
 
 import ru.cyberbiology.test.gui.AppWindow;
+import ru.cyberbiology.test.menu.demo.SortAction;
 import ru.cyberbiology.test.menu.file.*;
 import ru.cyberbiology.test.menu.view.ViewAction;
 import ru.cyberbiology.test.prototype.view.IView;
@@ -10,8 +11,7 @@ import ru.cyberbiology.test.view.ViewBasic;
 import javax.swing.*;
 import java.awt.*;
 
-import static ru.cyberbiology.test.util.Consts.APP_CAPTION;
-import static ru.cyberbiology.test.util.Consts.VIEW_TEXT;
+import static ru.cyberbiology.test.util.Consts.*;
 
 public class MainWindow extends AppWindow {
     public static MainWindow window;
@@ -66,6 +66,7 @@ public class MainWindow extends AppWindow {
         JMenuBar menuBar = new JMenuBar();
         initFileMenu(menuBar);
         initViewMenu(menuBar);
+        initDemoMenu(menuBar);
         this.setJMenuBar(menuBar);
     }
 
@@ -87,6 +88,12 @@ public class MainWindow extends AppWindow {
         JMenu viewMenu = new JMenu(VIEW_TEXT);
         new ViewAction(this).addTo(viewMenu);
         menuBar.add(viewMenu);
+    }
+
+    private void initDemoMenu(JMenuBar menuBar) {
+        JMenu demoMenu = new JMenu(DEMO_TEXT);
+        new SortAction(this).addTo(demoMenu);
+        menuBar.add(demoMenu);
     }
 
     private void initStatusPanel(Container container) {

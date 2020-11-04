@@ -1,6 +1,7 @@
 package ru.cyberbiology.test.gui;
 
-import ru.cyberbiology.test.Bot;
+import ru.cyberbiology.test.bot.Bot;
+import ru.cyberbiology.test.prototype.IBot;
 import ru.cyberbiology.test.prototype.gene.IBotGeneController;
 
 import javax.swing.*;
@@ -29,7 +30,7 @@ public class CustomListener implements MouseListener {
         int y = (int) p.getY();
         int botX = (x - 2) / BOTW;
         int botY = (y - 2) / BOTH;
-        Bot bot = world.getBot(botX, botY);
+        Bot bot = (Bot) world.getBot(botX, botY);
         if (bot != null) {
             {
                 Graphics g = appWindow.getBuffer().getGraphics();

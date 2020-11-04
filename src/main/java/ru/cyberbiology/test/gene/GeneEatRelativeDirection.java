@@ -1,6 +1,5 @@
 package ru.cyberbiology.test.gene;
 
-import ru.cyberbiology.test.Bot;
 import ru.cyberbiology.test.prototype.IBot;
 import ru.cyberbiology.test.prototype.gene.ABotGeneController;
 

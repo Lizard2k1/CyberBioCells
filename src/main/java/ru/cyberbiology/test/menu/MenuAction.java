@@ -6,6 +6,9 @@ import ru.cyberbiology.test.prototype.IWindow;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
+import static ru.cyberbiology.test.util.Consts.BOTH;
+import static ru.cyberbiology.test.util.Consts.BOTW;
+
 public abstract class MenuAction {
     protected World world;
     protected final IWindow window;
@@ -38,5 +41,12 @@ public abstract class MenuAction {
 
     protected JPanel getPaintPanel() {
         return window.getPaintPanel();
+    }
+
+    protected void createWorld() {
+        int width = getPaintPanel().getWidth() / BOTW;// Ширина доступной части экрана для рисования карты
+        int height = getPaintPanel().getHeight() / BOTH;// Боты 4 пикселя?
+        world = new World(window, width, height);
+        window.setWorld(world);
     }
 }

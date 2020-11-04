@@ -22,10 +22,7 @@ public class RunAction extends MenuAction {
     public ActionListener getListener() {
         return e -> {
             if (world == null) {
-                int width = getPaintPanel().getWidth() / BOTW;// Ширина доступной части экрана для рисования карты
-                int height = getPaintPanel().getHeight() / BOTH;// Боты 4 пикселя?
-                world = new World(window, width, height);
-                window.setWorld(world);
+                createWorld();
                 world.generateAdam();
                 window.paint();
             }

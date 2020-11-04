@@ -9,7 +9,7 @@ import ru.cyberbiology.test.prototype.gene.ABotGeneController;
             if (command == 37) {   // у меня поле высотой в 96 клеток
                 // байт в геноме может иметь значение от 0 до 63
                 // умножая значение байта на 1,5 получаем значение от 0 до 95
-                int param = botGetParam(this) * World.simulation.height / MIND_SIZE;   // берем следующий за командой байт и умножаем на 1,5
+                int param = botGetParam(this) * ru.cyberbiology.World.simulation.height / MIND_SIZE;   // берем следующий за командой байт и умножаем на 1,5
                 // если уровень бота ниже, чем полученное значение,
                 // то прибавляем к указатели текущей команды значение 2-го байта, после выполняемой команды
                 if (y < param) {

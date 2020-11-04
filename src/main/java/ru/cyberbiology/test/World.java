@@ -2,6 +2,8 @@ package ru.cyberbiology.test;
 
 import java.io.File;
 
+import ru.cyberbiology.test.bot.Bot;
+import ru.cyberbiology.test.prototype.IBot;
 import ru.cyberbiology.test.prototype.IWindow;
 import ru.cyberbiology.test.prototype.IWorld;
 import ru.cyberbiology.test.prototype.record.IRecordManager;
@@ -20,7 +22,7 @@ public class World implements IWorld
 	public int width;
 	public int height;
 
-	public Bot[][] matrix; // Матрица мира
+	public IBot[][] matrix; // Матрица мира
 	public int generation;
 	public int population;
 	public int organic;
@@ -139,6 +141,7 @@ public class World implements IWorld
 
 		matrix[bot.x][bot.y] = bot; // даём ссылку на бота в массиве world[]
 	}
+
 	public void restoreLinks()
 	{
 		for (int y = 0; y < height; y++)
@@ -147,17 +150,9 @@ public class World implements IWorld
 			{
 				if (matrix[x][y] != null)
 				{
-					if (matrix[x][y].alive == 3)
+					if (matrix[x][y].getAlive() == 3)
 					{
-						Bot bot = matrix[x][y];
-						if(bot.mprevX>-1 && bot.mprevY>-1)
-						{
-							bot.mprev	= matrix[bot.mprevX][bot.mprevY];
-						}
-						if(bot.mnextX>-1 && bot.mnextY>-1)
-						{
-							bot.mnext	= matrix[bot.mnextX][bot.mnextY];
-						}
+						matrix[x][y].relink(matrix);
 					}
 				}
 			}
@@ -198,7 +193,7 @@ public class World implements IWorld
 		return this.recorder.stopRecording();
 	}
 
-	public Bot getBot(int botX, int botY)
+	public IBot getBot(int botX, int botY)
 	{
 		return this.matrix[botX][botY];
 	}
@@ -230,7 +225,7 @@ public class World implements IWorld
 		this.recorder.makeSnapShot();
 	}
 	@Override
-	public Bot[][] getWorldArray()
+	public IBot[][] getWorldArray()
 	{
 		return  this.matrix;
 	}
