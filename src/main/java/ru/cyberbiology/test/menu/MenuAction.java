@@ -25,11 +25,18 @@ public abstract class MenuAction {
         addTo(parent, false);
     }
 
+    protected KeyStroke menuAccelerator() {
+        return null;
+    }
+
     public void addTo(JMenu parent, boolean addSeparator) {
         this.world = window.getWorld();
         actionItem = new JMenuItem(getCaption());
         parent.add(actionItem);
         actionItem.addActionListener(getListener());
+        if (menuAccelerator() != null) {
+            actionItem.setAccelerator(menuAccelerator());
+        }
         if (addSeparator) {
             parent.addSeparator();
         }

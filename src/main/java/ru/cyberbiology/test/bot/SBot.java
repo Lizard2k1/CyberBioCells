@@ -32,14 +32,16 @@ public class SBot extends Bot {
         if (step == 0) {
             posX = x * BOTW;
             posY = y * BOTH;
+        } else if (step > maxStep - delay && step < maxStep) {
+            if (step > 1 && onEnd != null) {
+                world.putToQueue(onEnd);
+                onEnd = null;
+            }
         } else if (step >= maxStep) {
             posX = x * BOTW;
             posY = y * BOTH;
             step = 0;
             maxStep = 0;
-            if (onEnd != null) {
-                onEnd.run();
-            }
         } else if (maxStep > 0 && step > delay && step < maxStep - delay) {
             posX = x * BOTW + (step - delay) * (targX * BOTW - x * BOTW) / (maxStep - delay * 2);
             posY = y * BOTH + (step - delay) * (targY * BOTH - y * BOTH) / (maxStep - delay * 2);

@@ -1,6 +1,8 @@
 package ru.cyberbiology.test;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import ru.cyberbiology.test.bot.Bot;
 import ru.cyberbiology.test.prototype.IBot;
@@ -108,15 +110,33 @@ public class World implements IWorld
 				if (rec)// вызываем обработчика "конец кадра"
 					recorder.stopFrame();
 				generation = generation + 1;
+				execQueue();
 				if (generation % 10 == 0)
 				{ // отрисовка на экран через каждые ... шагов
 					paint(); // отображаем текущее состояние симуляции на экран
 				}
 				// sleep(); // пауза между ходами, если надо уменьшить скорость
 			}
+			execQueue();
 //			world.matrix = world.swapMatrix;
 			paint();// если запаузили рисуем актуальную картинку
 			started = false;// Закончили работу
+		}
+	}
+
+	private void execQueue() {
+		synchronized (runQueue) {
+			for (Runnable runner: runQueue) {
+				runner.run();
+			}
+			runQueue.clear();
+		}
+	}
+
+	private final List<Runnable> runQueue = new ArrayList<>();
+	public void putToQueue(Runnable runnable) {
+		synchronized (runQueue) {
+			runQueue.add(runnable);
 		}
 	}
 

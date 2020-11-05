@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class SortAction extends MenuAction {
-    public static final int DEFAULT_STEPS = 1000;
+    public static final int DEFAULT_STEPS = 500;
     SortAction(IWindow window) {
         super(window);
     }

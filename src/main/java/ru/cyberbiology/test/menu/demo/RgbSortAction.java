@@ -4,6 +4,7 @@ import ru.cyberbiology.test.bot.Bot;
 import ru.cyberbiology.test.bot.SBot;
 import ru.cyberbiology.test.prototype.IWindow;
 
+import javax.swing.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -61,5 +62,10 @@ public class RgbSortAction extends SortAction {
             }
             return b1.c_red > b2.c_red ? 1 : - 1;
         });
+    }
+
+    @Override
+    protected KeyStroke menuAccelerator() {
+        return KeyStroke.getKeyStroke('\n');
     }
 }

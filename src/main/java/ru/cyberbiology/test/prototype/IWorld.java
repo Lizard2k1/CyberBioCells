@@ -22,4 +22,5 @@ public interface IWorld
 
 	public void restoreLinks();
 
+	void putToQueue(Runnable runnable);
 }
