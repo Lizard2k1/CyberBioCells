@@ -23,12 +23,31 @@ public class RgbSortAction extends SortAction {
         var wd = world.matrix.length;
         var ht = world.matrix[0].length;
         List<Bot> list = new LinkedList<>();
+        collectCells(wd, ht, list);
+        sortCellList(list);
+        // prep to move cells
+        AtomicInteger counter = new AtomicInteger(0);
+        for (int i = 0; i < wd; i++) {
+            for (int j = 0; j < ht; j++) {
+                var cell = ((SBot) world.matrix[i][j]);
+                final var ind = list.indexOf(cell);
+                int targX = ind % wd;
+                int targY = ind / wd;
+                cellPrep(wd, ht, counter, cell, targX, targY);
+            }
+        }
+    }
+
+    private void collectCells(int wd, int ht, List<Bot> list) {
         // collect cells
         for (int i = 0; i < wd; i++) {
             for (int j = 0; j < ht; j++) {
                 list.add((Bot) world.matrix[i][j]);
             }
         }
+    }
+
+    private void sortCellList(List<Bot> list) {
         // compare and sort cells
         list.sort((b1, b2) -> {
             if (b1.c_red == b2.c_red) {
@@ -42,23 +61,5 @@ public class RgbSortAction extends SortAction {
             }
             return b1.c_red > b2.c_red ? 1 : - 1;
         });
-        // prep to move cells
-        AtomicInteger counter = new AtomicInteger(0);
-        for (int i = 0; i < wd; i++) {
-            for (int j = 0; j < ht; j++) {
-                var cell = ((SBot) world.matrix[i][j]);
-                final var ind = list.indexOf(cell);
-                int targX = ind % wd;
-                int targY = ind / wd;
-                cell.prep(targX, targY, DEFAULT_STEPS, () -> {
-                    int count = counter.incrementAndGet();
-                    cell.swap(world.matrix[targX][targY]);
-                    if (count >= wd * ht) {
-                        world.matrix = world.swapMatrix;
-                        window.paint();
-                    }
-                });
-            }
-        }
     }
 }

@@ -13,12 +13,11 @@ public class DemoUtils {
             for (int j = 0; j < ht; j++) {
                 if (checkSBot(world.matrix[i][j]) || force) {
                     cleanPrevCell(world.matrix[i], j);
-                    world.matrix[i][j] = new SBot(world);
+                    world.setBot(new SBot(world, i, j));
                     var cell = ((Bot) world.matrix[i][j]);
                     cell.c_blue = (int) Math.round(Math.random() * 255);
                     cell.c_green = (int) Math.round(Math.random() * 255);
                     cell.c_red = (int) Math.round(Math.random() * 255);
-                    cell.setXY(i, j);
                     cell.step();
                 }
             }

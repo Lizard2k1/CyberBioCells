@@ -18,6 +18,11 @@ public class SBot extends Bot {
     private int step;
     private int maxStep = 0;
     private Graphics g;
+    public SBot(World world, int x, int y) {
+        this(world);
+        setXY(x, y);
+    }
+
     public SBot(World world) {
         super(world);
     }
@@ -34,8 +39,6 @@ public class SBot extends Bot {
             maxStep = 0;
             if (onEnd != null) {
                 onEnd.run();
-                onEnd = null;
-                world.stop();
             }
         } else if (maxStep > 0 && step > delay && step < maxStep - delay) {
             posX = x * BOTW + (step - delay) * (targX * BOTW - x * BOTW) / (maxStep - delay * 2);
@@ -64,14 +67,19 @@ public class SBot extends Bot {
 
     @Override
     public void swap(IBot iBot) {
-        world.swapMatrix[targX][targY] = this;
         if (iBot == null || this.equals(iBot)) {
             return;
         }
-        hasPos = false;
-        setXY(targX, targY);
-        posX = x * BOTW;
-        posY = y * BOTH;
+        resetPos(this);
+        resetPos((SBot) iBot);
+    }
+
+    private void resetPos(SBot bot) {
+        world.swapMatrix[bot.targX][bot.targY] = bot;
+        bot.hasPos = false;
+        bot.setXY(bot.targX, bot.targY);
+        bot.posX = bot.x * BOTW;
+        bot.posY = bot.y * BOTH;
     }
 
     @SuppressWarnings("unused")

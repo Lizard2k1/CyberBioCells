@@ -1,7 +1,10 @@
 package ru.cyberbiology.test.menu.demo;
 
 import ru.cyberbiology.test.bot.Bot;
+import ru.cyberbiology.test.bot.SBot;
 import ru.cyberbiology.test.prototype.IWindow;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TranspSortAction extends SortAction {
     public TranspSortAction(IWindow window) {
@@ -18,14 +21,13 @@ public class TranspSortAction extends SortAction {
         var wd = world.matrix.length;
         var ht = world.matrix[0].length;
         var max = Math.min(wd, ht);
+        AtomicInteger counter = new AtomicInteger(0);
         for (int i = 0; i < wd; i++) {
             for (int j = 0; j < ht; j++) {
-                var cell = ((Bot) world.matrix[i][j]);
+                var cell = ((SBot) world.matrix[i][j]);
                 if (i < max && j < max) {
                     int ix = Math.min(max, j), jy = Math.min(max, i);
-                    cell.prep(ix, jy, DEFAULT_STEPS, () -> {
-                        cell.swap(world.matrix[ix][jy]);
-                    });
+                    cellPrep(max, max, counter, cell, ix, jy);
                 }
             }
         }

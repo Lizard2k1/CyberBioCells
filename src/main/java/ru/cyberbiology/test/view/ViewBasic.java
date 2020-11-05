@@ -42,7 +42,7 @@ public class ViewBasic implements IView
                     g.setColor(Color.WHITE);
                     g.fillRect(x * BOTW,y * BOTH, BOTW, BOTH);
                 } else {
-                    world.matrix[x][y].setXY(x, y);
+//                    world.matrix[x][y].setXY(x, y);
                     world.matrix[x][y].paint(g);
                 }
             }

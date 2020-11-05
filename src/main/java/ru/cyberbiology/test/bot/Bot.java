@@ -1303,8 +1303,7 @@ public class Bot implements IBot {
             g.setColor(Color.BLACK);
             g.drawRect(px, py, BOTW, BOTH);
 //                    g.setColor(new Color(this.c_red, this.c_green, this.c_blue));
-            int green = (int) (this.c_green
-                    - ((this.c_green * this.health) / 2000));
+            int green = (this.c_green - ((this.c_green * this.health) / 2000));
             if (green < 0) green = 0;
             if (green > 255) green = 255;
             int blue = (int) (this.c_blue * 0.8
@@ -1314,5 +1313,10 @@ public class Bot implements IBot {
             g.fillRect(px + 1, py + 1, BOTW - 1, BOTH - 1);
             world.population = world.population + 1;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Bot{[" + x + ", " + y + "], alive=" + alive + '}';
     }
 }

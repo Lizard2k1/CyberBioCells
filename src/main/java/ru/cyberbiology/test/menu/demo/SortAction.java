@@ -1,9 +1,11 @@
 package ru.cyberbiology.test.menu.demo;
 
+import ru.cyberbiology.test.bot.SBot;
 import ru.cyberbiology.test.menu.MenuAction;
 import ru.cyberbiology.test.prototype.IWindow;
 
 import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class SortAction extends MenuAction {
     public static final int DEFAULT_STEPS = 1000;
@@ -28,4 +30,17 @@ public abstract class SortAction extends MenuAction {
     }
 
     abstract void sort();
+
+
+    protected void cellPrep(int wd, int ht, AtomicInteger counter, SBot cell, int targX, int targY) {
+        cell.prep(targX, targY, DEFAULT_STEPS, () -> {
+            int count = counter.incrementAndGet();
+            cell.swap(world.matrix[targX][targY]);
+            if (count >= wd * ht) {
+                world.stop();
+                world.matrix = world.swapMatrix;
+                window.paint();
+            }
+        });
+    }
 }

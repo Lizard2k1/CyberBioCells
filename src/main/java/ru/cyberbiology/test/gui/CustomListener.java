@@ -21,7 +21,7 @@ public class CustomListener implements MouseListener {
 
     public void mouseClicked(MouseEvent e) {
         var world = appWindow.getWorld();
-        if (world.started()) {
+        if (world == null || world.started()) {
             return;//Если идет обсчет не суетимся, выводить ничего не надо.
         }
 
