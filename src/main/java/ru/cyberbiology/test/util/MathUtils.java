@@ -11,8 +11,9 @@ public class MathUtils {
     public static final int maxFnc = 4;
     public static final int addFnc = 8;
     public static final int cplxFnc = 4;
+    public static final int multFnc = 4;
     public static final int diffRnd = 3; //4;
-    public static final int maxRnd = diffRnd * (maxFnc + addFnc + cplxFnc);
+    public static final int maxRnd = diffRnd * (maxFnc + addFnc + cplxFnc + multFnc);
 
     public static Point addX(Point to, int addX) {
         return new Point(to.x + addX, to.y);
@@ -167,6 +168,19 @@ public class MathUtils {
         return new Point(i, j);
     }
 
+    @SuppressWarnings("unchecked")
+    public static TriFunction<Point> multiple(TriFunction<Point>... funcs) {
+        return (i, j, k) -> {
+          var point =  new Point(i, j);
+          for (int ii = 0; ii < funcs.length; ii++) {
+              MathUtils.fnc = fncHolder.fncMap.get(ii);
+              point = funcs[ii].apply(point.x, point.y, k);
+          }
+          return point;
+        };
+    }
+
+    @SuppressWarnings("unchecked")
     public static TriFunction<Point> getFnc(int rnd) {
         switch (rnd / diffRnd) {
             // simple functions
@@ -183,11 +197,16 @@ public class MathUtils {
             case 9: return MathUtils::roundXYi;
             case 10: return MathUtils::crossXY;
             case 11: return MathUtils::crossXYi;
+            // multiple functions
+            case 12: return multiple(MathUtils::rombXY, MathUtils::rombXYi);
+            case 13: return multiple(MathUtils::squareXY, MathUtils::squareXYi);
+            case 14: return multiple(MathUtils::roundXY, MathUtils::roundXYi);
+            case 15: return multiple(MathUtils::crossXY, MathUtils::crossXYi);
             // complex functions
-            case 12: return MathUtils::quartXY;
-            case 13: return MathUtils::tripleXY;
-            case 14: return MathUtils::dblQuartXY;
-            case 15: return MathUtils::quintXY;
+            case 16: return MathUtils::quartXY;
+            case 17: return MathUtils::tripleXY;
+            case 18: return MathUtils::dblQuartXY;
+            case 19: return MathUtils::quintXY;
         }
         return MathUtils::diagXY;
     }
@@ -234,12 +253,18 @@ public class MathUtils {
 
     private final static Random r = new Random();
     private static TriFunction<Point> fnc = getFnc(r.nextInt(maxFnc * diffRnd));
+    //todo need to be split by extrenal initialization
+    private static TriFunction<Point> fnc1 = getFnc(r.nextInt(maxFnc * diffRnd));
+    private static TriFunction<Point> fnc2 = getFnc(r.nextInt(maxFnc * diffRnd));
+
     public static class FncHolder {
         public final Map<Integer, TriFunction<Point>> fncMap = new HashMap<>();
     }
     private static FncHolder fncHolder = new FncHolder();
 
     public static void setFnc(TriFunction<Point> fnc) {
+        MathUtils.fnc2 = MathUtils.fnc1;
+        MathUtils.fnc1 = MathUtils.fnc;
         MathUtils.fnc = fnc;
     }
 
@@ -250,7 +275,10 @@ public class MathUtils {
     public static void setupMathFnc(TriFunction<Point> fnc, Supplier<TriFunction<Point>> mapFnc) {
         MathUtils.setFnc(fnc);
         FncHolder fncHolder = new FncHolder();
-        for (int ii = 0; ii < 99; ii++) {
+        fncHolder.fncMap.put(0, MathUtils.fnc);
+        fncHolder.fncMap.put(1, MathUtils.fnc1);
+        fncHolder.fncMap.put(2, MathUtils.fnc2);
+        for (int ii = 3; ii < 99; ii++) {
             fncHolder.fncMap.put(ii, mapFnc.get());
         }
         MathUtils.setFncHolder(fncHolder);
