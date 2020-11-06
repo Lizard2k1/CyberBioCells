@@ -43,7 +43,7 @@ public class TranspSortAction extends SortAction {
         setupMathFnc(getFnc(r.nextInt(maxFnc * diffRnd)),
                 () -> getFnc(r.nextInt((maxFnc + addFnc) * diffRnd)));
         int rnd = maxRnd;
-        while (rnd > stopRnd || rnd % 4 == 3) rnd = genRndValue();
+        while (rnd > stopRnd) rnd = genRndValue();
         maxCountHolder.set(0);
         for (int i = 0; i < wd; i++) {
             for (int j = 0; j < ht; j++) {
