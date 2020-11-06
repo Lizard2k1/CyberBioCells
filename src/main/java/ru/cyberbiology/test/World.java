@@ -12,6 +12,7 @@ import ru.cyberbiology.test.prototype.record.IRecordManager;
 import ru.cyberbiology.test.record.v0.PlaybackManager;
 import ru.cyberbiology.test.record.v0.RecordManager;
 import ru.cyberbiology.test.util.ProjectProperties;
+import ru.cyberbiology.test.util.Worker;
 
 public class World implements IWorld
 {
@@ -31,7 +32,7 @@ public class World implements IWorld
 	public int organic;
 
 	boolean started;
-	Worker thread;
+	private Worker mainThread;
 	private Runnable onStart;
 	private Runnable onStop;
 	public World(IWindow win)
@@ -74,15 +75,19 @@ public class World implements IWorld
 	{
 		return window.getProperties();
 	}
-	class Worker extends Thread
+	class WorldStopper implements Runnable {
+		@Override
+		public void run() {
+			execQueue();
+			//			world.matrix = world.swapMatrix;
+			paint();// если запаузили рисуем актуальную картинку
+			started = false;// Закончили работу
+		}
+	}
+	class WorldWorker implements Runnable
 	{
 		public void run()
 		{
-			started = true;// Флаг работы потока, если установить в false поток
-							// заканчивает работу
-			while (started)
-			{
-
 				boolean rec = recorder.isRecording(); // запоминаем флаг
 														// "записывать" на
 														// полную итерацию кадра
@@ -116,11 +121,6 @@ public class World implements IWorld
 					paint(); // отображаем текущее состояние симуляции на экран
 				}
 				// sleep(); // пауза между ходами, если надо уменьшить скорость
-			}
-			execQueue();
-//			world.matrix = world.swapMatrix;
-			paint();// если запаузили рисуем актуальную картинку
-			started = false;// Закончили работу
 		}
 	}
 
@@ -186,27 +186,42 @@ public class World implements IWorld
 	}
 	public boolean started()
 	{
-		return this.thread != null;
+		return this.mainThread != null;
 	}
 
-	public void start()
-	{
-		if (!this.started())
-		{
-			this.thread = new Worker();
-			this.thread.start();
-			if (onStart != null) {
-				onStart.run();
-			}
+	public void start() {
+		if (!this.started()) {
+			mainThread = start(new WorldWorker(), new WorldStopper(), onStart);
 		}
 	}
 
-	public void stop()
+	private List<Worker> threadPool = new ArrayList<>();
+	public Worker start(Runnable runner, Runnable stopper, Runnable onStart)
 	{
+		var thread = new Worker(runner, stopper);
+		thread.begin();
+		threadPool.add(thread);
+		thread.start();
+		if (onStart != null) {
+			onStart.run();
+		}
+		return thread;
+	}
+
+	public void stop() {
+		stop(mainThread, onStop);
+		mainThread = null;
+	}
+
+	public void stop(Worker worker, Runnable onStop) {
 		started = false;
-		this.thread = null;
-		if (onStop != null) {
-			onStop.run();
+		if (worker != null) {
+			worker.end();
+//			worker.stop();
+			threadPool.remove(worker);
+			if (onStop != null) {
+				onStop.run();
+			}
 		}
 	}
 

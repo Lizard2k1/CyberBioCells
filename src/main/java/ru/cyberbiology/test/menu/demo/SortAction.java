@@ -13,6 +13,9 @@ public abstract class SortAction extends MenuAction {
         super(window);
     }
 
+    protected Runnable onAction;
+    protected Runnable onStop;
+
     @Override
     public ActionListener getListener() {
         return e -> {
@@ -26,6 +29,9 @@ public abstract class SortAction extends MenuAction {
             sort();
             window.paint();
             world.start();
+            if (onAction != null) {
+                onAction.run();
+            }
         };
     }
 
@@ -35,11 +41,18 @@ public abstract class SortAction extends MenuAction {
     protected void cellPrep(int wd, int ht, AtomicInteger counter, SBot cell, int targX, int targY) {
         cell.prep(targX, targY, DEFAULT_STEPS, () -> {
             int count = counter.incrementAndGet();
-            cell.swap(world.matrix[targX][targY]);
+            try {
+                cell.swap(world.matrix[targX][targY]);
+            } catch (ArrayIndexOutOfBoundsException obe) {
+                // do nothing
+            }
             if (count >= wd * ht) {
                 world.stop();
                 world.matrix = world.swapMatrix;
                 window.paint();
+                if (onStop != null) {
+                    onStop.run();
+                }
             }
         });
     }
