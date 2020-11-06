@@ -7,14 +7,15 @@ import ru.cyberbiology.test.prototype.IWindow;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static ru.cyberbiology.test.util.Consts.DEFAULT_STEPS;
+
 public abstract class SortAction extends MenuAction {
-    public static final int DEFAULT_STEPS = 500;
     SortAction(IWindow window) {
         super(window);
     }
 
-    protected Runnable onAction;
-    protected Runnable onStop;
+    Runnable onAction;
+    Runnable onStop;
 
     @Override
     public ActionListener getListener() {
@@ -38,7 +39,11 @@ public abstract class SortAction extends MenuAction {
     abstract void sort();
 
 
-    protected void cellPrep(int wd, int ht, AtomicInteger counter, SBot cell, int targX, int targY) {
+    protected boolean checkPrepCount(int count, int wd, int ht) {
+        return count >= wd * ht;
+    }
+
+    void cellPrep(int wd, int ht, AtomicInteger counter, SBot cell, int targX, int targY) {
         cell.prep(targX, targY, DEFAULT_STEPS, () -> {
             int count = counter.incrementAndGet();
             try {
@@ -46,14 +51,18 @@ public abstract class SortAction extends MenuAction {
             } catch (ArrayIndexOutOfBoundsException obe) {
                 // do nothing
             }
-            if (count >= wd * ht) {
-                world.stop();
-                world.matrix = world.swapMatrix;
-                window.paint();
-                if (onStop != null) {
-                    onStop.run();
-                }
-            }
+            checkForStop(wd, ht, count);
         });
+    }
+
+    void checkForStop(int wd, int ht, int count) {
+        if (checkPrepCount(count, wd, ht)) {
+            world.stop();
+            world.matrix = world.swapMatrix;
+            window.paint();
+            if (onStop != null) {
+                onStop.run();
+            }
+        }
     }
 }
