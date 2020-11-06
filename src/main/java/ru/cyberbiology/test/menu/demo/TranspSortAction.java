@@ -16,7 +16,8 @@ import static ru.cyberbiology.test.util.MathUtils.*;
 public class TranspSortAction extends SortAction {
     private static final boolean useRandom = true;
     private int startRnd = 0;
-    private int stopRnd = maxRnd - 1;
+    @SuppressWarnings("ConstantConditions")
+    private int stopRnd = startRnd == 0 ? maxRnd - 1 : startRnd;
     private boolean paused = true;
     private Worker awaiter;
     public TranspSortAction(IWindow window) {
@@ -42,14 +43,15 @@ public class TranspSortAction extends SortAction {
         setupMathFnc(getFnc(r.nextInt(maxFnc * diffRnd)),
                 () -> getFnc(r.nextInt((maxFnc + addFnc) * diffRnd)));
         int rnd = maxRnd;
-        while (rnd > stopRnd) rnd = genRndValue();
+        while (rnd > stopRnd || rnd % 4 == 3) rnd = genRndValue();
+        maxCountHolder.set(0);
         for (int i = 0; i < wd; i++) {
             for (int j = 0; j < ht; j++) {
                 var cell = ((SBot) world.matrix[i][j]);
                 sortByKind(cell, counter, rnd, i, j, wd, ht, max);
             }
         }
-//        setOnAction();
+        checkForStop(wd, ht, max);
         setOnStop();
     }
 
@@ -60,8 +62,19 @@ public class TranspSortAction extends SortAction {
     @Override
     public ActionListener getListener() {
         return evt -> {
+            if (paused && stopRnd == startRnd) {
+                startRnd += diffRnd;
+                if (startRnd > maxRnd) {
+                    startRnd = r.nextInt(3);
+                }
+                stopRnd = startRnd;
+            }
             paused = !paused;
-            doAction();
+            if (paused) {
+                world.stop();
+            } else {
+                doAction();
+            }
         };
     }
 
@@ -81,9 +94,9 @@ public class TranspSortAction extends SortAction {
                 world.stop(awaiter, () -> {});
             }
             awaiter = world.start(() -> {
-                if (!world.started()) {
-                    // world.stop(awaiter);
-                }
+//                if (!world.started()) {
+//                    // world.stop(awaiter);
+//                }
                 //runner
             }, () -> {
                 //stopper
@@ -97,11 +110,18 @@ public class TranspSortAction extends SortAction {
         return useRandom ? r.nextInt(maxRnd - startRnd) + startRnd : prev++;
     }
 
+    @Override
+    protected boolean checkPrepCount(int count, int wd, int ht) {
+        return count >= maxCountHolder.get();
+    }
+
+    private AtomicInteger maxCountHolder = new AtomicInteger();
     private void sortByKind(SBot bot, AtomicInteger counter, int rnd,
                             int i, int j, int wd, int ht, int max) {
         if (intersect(rnd, i, j, wd, ht, max)) {
             Point xy = convertXY(rnd, i, j, max);
             cellPrep(max, max, counter, bot, xy.x, xy.y);
+            maxCountHolder.incrementAndGet();
         }
     }
 

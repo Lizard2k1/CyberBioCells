@@ -42,18 +42,19 @@ public abstract class MenuAction {
         }
     }
 
-    public void setText(String text) {
+    protected void setText(String text) {
         actionItem.setText(text);
     }
 
-    protected JPanel getPaintPanel() {
+    private JPanel getPaintPanel() {
         return window.getPaintPanel();
     }
 
     protected void createWorld() {
+        int div = 2 * 3;
         int width = getPaintPanel().getWidth() / BOTW;// Ширина доступной части экрана для рисования карты
         int height = getPaintPanel().getHeight() / BOTH;// Боты 4 пикселя?
-        world = new World(window, width, height);
+        world = new World(window, (width / div) * div, (height / div) * div);
         window.setWorld(world);
     }
 }

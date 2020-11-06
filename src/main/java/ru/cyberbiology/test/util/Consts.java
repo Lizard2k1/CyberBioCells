@@ -1,7 +1,8 @@
 package ru.cyberbiology.test.util;
 
 public class Consts {
-    public static final int SIZE_MULTIPLIER = 3;
+    public static final int DEFAULT_STEPS = 500;
+    private static final int SIZE_MULTIPLIER = 3;
     public static final int BOTW	= 4 * SIZE_MULTIPLIER;
     public static final int BOTH	= 4 * SIZE_MULTIPLIER;
 
@@ -20,7 +21,7 @@ public class Consts {
     public static final String OPEN_TEXT = "Открыть";
     public static final String DEMO_TEXT = "Демо";
 
-    public static final String MAIN_TITLE = "CyberBiologyTest";
-    public static final String APP_VERSION = "1.0.0";
+    private static final String MAIN_TITLE = "CyberBiologyTest";
+    private static final String APP_VERSION = "1.0.0";
     public static final String APP_CAPTION = String.format("%s - %s", MAIN_TITLE, APP_VERSION);
 }

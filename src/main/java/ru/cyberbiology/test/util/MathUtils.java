@@ -6,11 +6,12 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
 
+@SuppressWarnings("WeakerAccess")
 public class MathUtils {
     public static final int maxFnc = 4;
     public static final int addFnc = 8;
     public static final int cplxFnc = 4;
-    public static final int diffRnd = 3;
+    public static final int diffRnd = 4;
     public static final int maxRnd = diffRnd * (maxFnc + addFnc + cplxFnc);
 
     public static Point addX(Point to, int addX) {
@@ -70,10 +71,10 @@ public class MathUtils {
 
     public static Point squareXYi(int i, int j, int max) {
         int subMax = max / 4;
-        if (i >= subMax && i < subMax * 3 && j >= subMax && j < subMax * 3) {
-            return new Point(i, j);
+        if (i < subMax || i >= subMax * 3 || j < subMax || j >= subMax * 3) {
+            return fnc.apply(i, j, subMax * 4);
         }
-        return fnc.apply(i, j, max);
+        return new Point(i, j);
     }
 
     public static Point crossXY(int i, int j, int max) {
@@ -81,62 +82,64 @@ public class MathUtils {
         if (i >= subMax && i < subMax * 3 || j >= subMax && j < subMax * 3) {
             return new Point(i, j);
         }
-        return fnc.apply(i, j, max);
+        return fnc.apply(i, j, subMax * 4);
     }
 
     public static Point crossXYi(int i, int j, int max) {
         int subMax = max / 4;
         if (i >= subMax && i < subMax * 3 || j >= subMax && j < subMax * 3) {
-            return new Point(i, j);
+            return fnc.apply(i, j, subMax * 4);
         }
-        return fnc.apply(i, j, max);
+        return new Point(i, j);
     }
 
     public static Point roundXY(int i, int j, int max) {
-        int minMax = (max / 2) * 2;
-        if (i > minMax || j > minMax) {
+        int minMax = (max / 4) * 4;
+        if (i == 0 || j == 0 || i >= minMax || j >= minMax) {
             return new Point(i, j);
         }
-        int subMax = max / 2;
-        if ((i - subMax) * (i - subMax)
-                + (j - subMax) * (j - subMax) >= subMax * subMax) {
+        int subMax = minMax / 2 + minMax % 2;
+        if ((i - subMax) * (i - subMax) + (j - subMax) * (j - subMax)
+                > (subMax) * (subMax)) {
             return new Point(i, j);
         }
-        return fnc.apply(i, j, minMax);
+        return fnc.apply(i, j, minMax + 1);
     }
 
     public static Point roundXYi(int i, int j, int max) {
-        int minMax = (max / 2) * 2;
-        if (i > minMax || j > minMax) {
+        int minMax = (max / 4) * 4;
+        int subMax = minMax / 2 + minMax % 2;
+        if ((i - subMax) * (i - subMax) + (j - subMax) * (j - subMax)
+                <= (subMax) * (subMax)) {
             return new Point(i, j);
         }
-        int subMax = max / 2;
-        if ((i - subMax) * (i - subMax)
-                + (j - subMax) * (j - subMax) < subMax * subMax) {
-            return new Point(i, j);
-        }
-        return fnc.apply(i, j, minMax);
+        return fnc.apply(i, j, minMax + 1);
     }
 
     public static Point quartXY(int i, int j, int max) {
+        //noinspection unchecked
         return quartXY(i, j, max, 2);
     }
     public static Point tripleXY(int i, int j, int max) {
+        //noinspection unchecked
         return quartXY(i, j, max, 3);
     }
     public static Point dblQuartXY(int i, int j, int max) {
+        //noinspection unchecked
         return quartXY(i, j, max, 4);
     }
     public static Point quintXY(int i, int j, int max) {
+        //noinspection unchecked
         return quartXY(i, j, max, 5);
     }
 
+    @SuppressWarnings("unchecked")
     public static Point quartXY(int i, int j, int max, int div, TriFunction<Point>... fncs) {
         int subMax = max / div;
         if (i >= subMax * div || j >= subMax * div) {
             return new Point(i, j);
         }
-        TriFunction<Point> func = fnc;
+        TriFunction<Point> func;
         for (int ci = 0; ci < subMax; ci++) {
             for (int cj = 0; cj < subMax; cj++) {
                 if (i >= subMax * ci && i < subMax * (ci + 1)) {
@@ -181,14 +184,16 @@ public class MathUtils {
             case 14: return MathUtils::dblQuartXY;
             case 15: return MathUtils::quintXY;
         }
-        return null;
+        return MathUtils::diagXY;
     }
 
-    public static Point addFnc(int rnd, TriFunction<Point> fnc, Point ij, int max) {
+    @SuppressWarnings("unused")
+    public static Point addFnc(int rnd, int i, TriFunction<Point> fnc, Point ij, int max) {
         switch (rnd % diffRnd) {
             case 0: return fnc.apply(ij.x, ij.y, max);
             case 1: return addX(fnc.apply(ij.x, ij.y, max), max);
             case 2: return addX(fnc.apply(ij.x, ij.y, max), max / 2);
+//            case 3: return addFnc(i < max ? 0 : 1, i, fnc, ij, max);
         }
         return new Point(-1, -1);
     }
@@ -198,10 +203,12 @@ public class MathUtils {
             case 0: return new Point(i, j);
             case 1: return new Point(i - max, j);
             case 2: return new Point(i - max / 2, j);
+//            case 3: return new Point(i < max ? i : i - max, j);
         }
         return new Point(-1, -1);
     }
 
+    @SuppressWarnings("unused")
     public static boolean intersect(int rnd, int i, int j, int wd, int ht, int max) {
         switch (rnd % diffRnd) {
             case 0:
@@ -210,12 +217,14 @@ public class MathUtils {
                 return  i >= wd - max;
             case 2:
                 return  i >= max / 2 && i < wd - max / 2;
+//            case 3:
+//                return  j < max && (i < max || i >= wd - max);
         }
         return false;
     }
 
     public static Point convertXY(int rnd, int i, int j, int max) {
-        return addFnc(rnd, getFnc(rnd), getIJ(rnd, i, j, max), max);
+        return addFnc(rnd, i, getFnc(rnd), getIJ(rnd, i, j, max), max);
     }
 
     private final static Random r = new Random();
@@ -241,6 +250,7 @@ public class MathUtils {
         }
         MathUtils.setFncHolder(fncHolder);
     }
+    @SuppressWarnings({"unchecked", "unused"})
     public static void setupMathFnc(TriFunction<Point> fnc, TriFunction<Point>... mapFncs) {
         MathUtils.setFnc(fnc);
         FncHolder fncHolder = new FncHolder();
