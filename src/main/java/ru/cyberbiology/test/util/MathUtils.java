@@ -11,7 +11,7 @@ public class MathUtils {
     public static final int maxFnc = 4;
     public static final int addFnc = 8;
     public static final int cplxFnc = 4;
-    public static final int diffRnd = 4;
+    public static final int diffRnd = 3; //4;
     public static final int maxRnd = diffRnd * (maxFnc + addFnc + cplxFnc);
 
     public static Point addX(Point to, int addX) {
@@ -71,24 +71,26 @@ public class MathUtils {
 
     public static Point squareXYi(int i, int j, int max) {
         int subMax = max / 4;
-        if (i < subMax || i >= subMax * 3 || j < subMax || j >= subMax * 3) {
-            return fnc.apply(i, j, subMax * 4);
+        if ((i <= subMax || i > subMax * 3) || (j <= subMax || j > subMax * 3)) {
+            return fnc.apply(i, j, max);
         }
         return new Point(i, j);
     }
 
     public static Point crossXY(int i, int j, int max) {
         int subMax = max / 4;
-        if (i >= subMax && i < subMax * 3 || j >= subMax && j < subMax * 3) {
+        if ((i > subMax) && (i <= (max - subMax - 1))
+                || (j > subMax) && (j <= (max - subMax - 1))) {
             return new Point(i, j);
         }
-        return fnc.apply(i, j, subMax * 4);
+        return fnc.apply(i, j, max + 1);
     }
 
     public static Point crossXYi(int i, int j, int max) {
         int subMax = max / 4;
-        if (i >= subMax && i < subMax * 3 || j >= subMax && j < subMax * 3) {
-            return fnc.apply(i, j, subMax * 4);
+        if ((i > subMax) && (i <= (max - subMax - 1))
+                || (j > subMax) && (j <= (max - subMax - 1))) {
+            return fnc.apply(i, j, max + 1);
         }
         return new Point(i, j);
     }
@@ -98,7 +100,7 @@ public class MathUtils {
         if (i == 0 || j == 0 || i >= minMax || j >= minMax) {
             return new Point(i, j);
         }
-        int subMax = minMax / 2 + minMax % 2;
+        int subMax = minMax / 2;
         if ((i - subMax) * (i - subMax) + (j - subMax) * (j - subMax)
                 > (subMax) * (subMax)) {
             return new Point(i, j);
@@ -108,9 +110,12 @@ public class MathUtils {
 
     public static Point roundXYi(int i, int j, int max) {
         int minMax = (max / 4) * 4;
-        int subMax = minMax / 2 + minMax % 2;
+        if (i == 0 || j == 0 || i >= minMax || j >= minMax) {
+            return new Point(i, j);
+        }
+        int subMax = minMax / 2;
         if ((i - subMax) * (i - subMax) + (j - subMax) * (j - subMax)
-                <= (subMax) * (subMax)) {
+                < (subMax) * (subMax)) {
             return new Point(i, j);
         }
         return fnc.apply(i, j, minMax + 1);
